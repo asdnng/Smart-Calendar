@@ -34,6 +34,12 @@ public class MainController {
         return hello;
     }
 
+    @GetMapping("/api/hello")
+    @ResponseBody
+    public String test() {
+        return "Hello, world!";
+    }
+
     static class Hello {
         private String name; // because of private, can only access through getter,setter from external libraries
 
