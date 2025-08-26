@@ -1,10 +1,12 @@
 package project_MG.MG.service;
 
+import org.springframework.stereotype.Service;
 import project_MG.MG.domain.Member;
 import project_MG.MG.repository.MemberRepository;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class MemberService {
 
     private final MemberRepository memberRepository;
