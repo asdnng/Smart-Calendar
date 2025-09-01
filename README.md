@@ -30,3 +30,37 @@ http://localhost:8080/
 |                | GET         | `/events/{id}`              | Get a specific event                          |
 |                | POST        | `/events`                   | Create a new event (proposed → confirm)       |
 |                | PATCH       | `/events/{id}`              | Update/move an event                          |
+
+
+
+## Additional Information for Mun who Feels Confused
+
+### What is Axios?  
+Axios is a popular JavaScript library used to make HTTP requests (e.g., GET, POST, PUT, DELETE) to a server. It is often used in frontend development to communicate with backend APIs.
+
+### Why use Axios?  
+1. It simplifies making HTTP requests compared to the built-in 'fetch API'(maybe you know this?).
+2. It supports features like request/response interceptors, automatic JSON parsing, and error handling.
+3. It works in both browsers and Node.js environments.
+
+### Example
+```javascript
+// Axios library import
+import axios from 'axios';
+
+// send GET request
+axios.get('https://api.example.com/data')
+  .then(response => {
+    // successful response
+    console.log('data:', response.data);
+  })
+  .catch(error => {
+    // exeception handleling
+    console.error('errrrrror occurrr:', error);
+  });
+```
+### Which file should Mun start working on?
+MG/src/main/frontend/src/App.js    
+in this project, App.js serves as the main entry point for the React application. It is the root component where other components can be integrated and where the main logic for rendering the frontend begins.
+
+### Go for it! 화이팅! suu suu ! 
