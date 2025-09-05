@@ -28,17 +28,24 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 
 function App() {
-   const [hello, setHello] = useState('')
+    const [oauthUrl, setOauthUrl] = useState('');
 
-    useEffect(() => {
-        axios.get('/api/hello')
-        .then(response => setHello(response.data))
-        .catch(error => console.log(error))
-    }, []);
+    const fetchOAuthUrl = () => {
+        const redirectUri = encodeURIComponent('http://localhost:3000/callback');
+        axios.get(`/api/oauth/login/google?redirectUri=${redirectUri}`)
+            .then(response => setOauthUrl(response.data))
+            .catch(error => console.error('Error fetching OAuth URL:', error));
+    };
 
     return (
         <div>
-            Data from BACKEND?!?!?hehe : {hello}
+            <button onClick={fetchOAuthUrl}>Get Google OAuth URL</button>
+            {oauthUrl && (
+                <div>
+                    <p>Generated OAuth URL:</p>
+                    <a href={oauthUrl} target="_blank" rel="noopener noreferrer">{oauthUrl}</a>
+                </div>
+            )}
         </div>
     );
 }
