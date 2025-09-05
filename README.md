@@ -9,6 +9,15 @@ Backend: Gyeongyeong.
 enter website: Run MGapplication and then enter  
 http://localhost:8080/ 
 
+🍒🍒🍒before edit!
+
+```
+git fetch origin
+
+git switch frontend(backend)
+git rebase origin/master
+```
+
 ## what is the purpose af API: 
 
 1. To ensure backend and frontend developers are on the same page regarding the results of their planning.
