@@ -6,10 +6,17 @@ Programming language used: Java, HTML, JavaScripts, CSS.  (might be changed)
 Design/Frontend: Mun.  
 Backend: Gyeongyeong.
 
-enter website: Run MGapplication and then enter  
-http://localhost:8080/ 
+## Run info for Mun
+1. run spring server(if you want to use API!)(http://localhost:8080)
+2. If you want to just check frontend, you can skip step 1.
+```commandline
+3. npm start  //(in MG/src/main/frontend)
+```
+4. React can check state dynamically (this is the one of React's advantages!)
 
-🍒🍒🍒before edit!
+5. Then you can check frontend in your browser: http://localhost:3000
+
+🍒before edit!🍒
 
 ```
 git fetch origin
