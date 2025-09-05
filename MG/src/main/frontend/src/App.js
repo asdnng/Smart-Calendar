@@ -31,7 +31,7 @@ function App() {
     const [oauthUrl, setOauthUrl] = useState('');
 
     const fetchOAuthUrl = () => {
-        const redirectUri = encodeURIComponent('http://localhost:3000/callback');
+        const redirectUri = encodeURIComponent('http://localhost:8080/callback');
         axios.get(`/api/oauth/login/google?redirectUri=${redirectUri}`)
             .then(response => setOauthUrl(response.data))
             .catch(error => console.error('Error fetching OAuth URL:', error));
