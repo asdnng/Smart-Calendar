@@ -6,6 +6,7 @@ import '../cssModules/login.css';
 import googleLogo from '../assets/google-logo.png';
 import projectLogo from '../assets/emoji.png';
 
+
 function LoginPage() {
   const [isSignIn, setIsSignIn] = useState(true);
   const toggleForm = () => setIsSignIn(!isSignIn);
@@ -26,6 +27,14 @@ function LoginPage() {
       setError("Password does not match");
     } else { navigate("/dashboard"); }
   };
+
+//  const googleLogin = () => {
+//      window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?
+//  		client_id=${process.env.REACT_APP_GOOGLE_AUTH_CLIENT_ID}
+//  		&redirect_uri=${process.env.REACT_APP_GOOGLE_AUTH_REDIRECT_URI}
+//  		&response_type=code
+//  		&scope=email profile`;
+//  };
 
   return (
     <div className="container-fluid vh-100 bg-dark">
@@ -151,7 +160,7 @@ function LoginPage() {
               type="button"
               className="btn btn-secondary w-100 d-flex align-items-center justify-content-center"
               style={{ position: "relative" }}
-              onClick={() => window.open("https://www.google.com", "blank", "noopener,noreferrer")}
+              onClick={() => window.open("https://accounts.google.com/o/oauth2/v2/auth", "blank", "noopener,noreferrer")} //have to modify later
             >
               <img
                 src={googleLogo}

@@ -22,7 +22,7 @@ public class OAuthControllerTest {
     public void testGetGoogleCalendarOAuthUrl() throws Exception {
         String redirectUri = "http://localhost:8080/callback";
 
-        mockMvc.perform(get("/oauth/login/google")
+        mockMvc.perform(get("/api/oauth/login/google")
                         .param("redirectUri", redirectUri))
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("https://accounts.google.com/o/oauth2/v2/auth")));
