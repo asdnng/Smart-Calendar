@@ -1,0 +1,30 @@
+.menu-toggle-btn {
+  position: fixed;
+  top: 10px;
+  left: 15px;
+  z-index: 1100;
+  background: transparent;
+  border: none;
+}
+
+.menu-panel a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.menu-panel {
+  position: fixed;
+  top: 0;
+  left: -210px;
+  height: 100vh;
+  width: 210px;
+  background-color: rgba(33, 37, 41, 0.95);
+  color: white;
+  padding-top: 25px;
+  transition: left 0.3s ease;
+  z-index: 1000;
+}
+
+.menu-panel.open {
+  left: 0;
+}
