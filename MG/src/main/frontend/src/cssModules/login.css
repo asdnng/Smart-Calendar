@@ -1,0 +1,9 @@
+input:user-invalid {
+  border: 1px solid red;
+  background-color: rgba(255, 192, 203, 0.5);
+}
+
+input:user-invalid:focus {
+  border: 1px solid red;
+  outline: 4px solid pink;
+}
