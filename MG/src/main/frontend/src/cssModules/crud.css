@@ -1,0 +1,141 @@
+.crud-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.crud-popup {
+  position: relative;
+  background-color: rgba(243, 235, 235, 0.9);
+  border-radius: 12px;
+  padding: 2rem;
+  min-width: 300px;
+  max-width: 500px;
+  box-shadow: 0px 5px 20px rgba(0,0,0,0.2);
+  text-align: left;
+  animation: scaleIn 0.5s ease-out;
+}
+
+/* DELETE TASK BUTTON */
+button.delete-task {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: rgba(28, 52, 84, 1);
+  color: rgba(243, 235, 235, 1);
+}
+button.delete-task:hover {
+  background-color: rgba(33, 37, 41, 1);
+  color: rgba(243, 235, 235, 1);
+}
+
+/* INPUTS CRUD FORM */
+.crud-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: transparent;
+}
+
+.crud-form .form-control:focus {
+  outline: 3px solid rgba(140, 187, 203, 0.5);
+  border: 1px solid rgba(28, 52, 84, 1);
+  box-shadow: none;
+}
+
+.crud-form input:user-invalid {
+  background: white;
+  border: 1px solid red;
+}
+
+.category-option .form-select:focus {
+  outline: 3px solid rgba(140, 187, 203, 0.5);
+  border: 1px solid rgba(28, 52, 84, 1);
+  box-shadow: none;
+}
+.category-option .form-select:user-invalid {
+  border: 1px solid red;
+}
+.category-option .form-select:user-invalid:focus {
+  outline: 3px solid rgba(140, 187, 203, 0.5);
+  border: 1px solid rgba(28, 52, 84, 1);
+}
+
+.form-description {
+  display: flex;
+  flex-direction: column;
+}
+
+.crud-popup textarea {
+  resize: none;
+}
+.crud-popup textarea:focus {
+  outline: 1px solid rgba(28, 52, 84, 1);
+}
+
+/* SUBMIT CRUD BUTTON */
+button.submit-crud {
+  background-color: rgba(140, 187, 203, 1);
+  border-radius: 20px;
+  border: 1px solid rgba(140, 187, 203, 1);
+  color: rgba(255, 255, 255, 1);
+}
+button.submit-crud:hover {
+  background-color: rgba(121, 164, 179, 1);
+  border: 1px solid rgba(121, 164, 179, 1);
+}
+button.submit-crud:active {
+  background-color: rgba(243, 235, 235, 1);
+  border: 1px solid rgba(121, 164, 179, 1);
+  color: rgba(121, 164, 179, 1);
+}
+
+/* ALERT POPUP */
+.alert-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2100;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.alert-popup {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  max-width: 350px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  animation: scaleIn 0.2s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
