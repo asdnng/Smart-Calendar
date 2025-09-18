@@ -1,12 +1,13 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// Import Order: React -> third-parties -> files/components -> assets -> css
 
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import LoginPage from './components/login.js';
 import DashboardPage from './components/dashboard.js';
 
-function App() {
+import './App.css';
 
+function App() {
   return (
     <Router>
       <Routes>

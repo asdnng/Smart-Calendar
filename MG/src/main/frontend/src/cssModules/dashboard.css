@@ -1,0 +1,29 @@
+.db-header {
+  background-color: rgba(28, 52, 84, 1);
+  font-family: "Lucida Console", "Courier New", monospace;
+}
+
+/* ADD TASK SHORTCUT BUTTON */
+.add-task-btn {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 500;
+  background-color: rgba(140, 187, 203, 1);
+  border-radius: 50%;
+  border: none;
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.4rem;
+  color: rgba(28, 52, 84, 1);
+}
+.add-task-btn:hover {
+  background-color: rgba(121, 164, 179, 1);
+}
+.add-task-btn:active {
+  background-color: rgba(28, 52, 84, 1);
+  color: rgba(243, 235, 235, 1);
+}
