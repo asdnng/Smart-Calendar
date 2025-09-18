@@ -1,30 +1,41 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import googleLogo from '../assets/google-logo.png';
+import gilLookUp from '../assets/gil-corner-lookup.png';
+import gilLookRight from '../assets/gil-corner-lookright.png';
+import gilLookFront from '../assets/gil-corner-lookfront.png';
+import gilLookDown from '../assets/gil-corner-lookdown.png';
+
 import '../cssModules/login.css';
 
-import googleLogo from '../assets/google-logo.png';
-import projectLogo from '../assets/emoji.png';
-
-
 function LoginPage() {
+  /* SIGN-IN/SIGN-OUT TRIGGER VARIABLES */
   const [isSignIn, setIsSignIn] = useState(true);
   const toggleForm = () => setIsSignIn(!isSignIn);
-
+  /* USER INPUT VARIABLES */
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
   const [error, setError] = useState("");
+
+  const [gilImage, setGilImage] = useState(gilLookUp);
+
   const navigate = useNavigate();
+
+  const onFocusConfirmPassword = () => {
+    setError("");
+    setGilImage(gilLookDown);
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
 
     if (!username || !password) return;
-
     if (!isSignIn && (cPassword !== password)) {
       setError("Password does not match");
+      setGilImage(gilLookFront);
     } else { navigate("/dashboard"); }
   };
 
@@ -37,17 +48,22 @@ function LoginPage() {
 //  };
 
   return (
-    <div className="container-fluid vh-100 bg-dark">
+    <div className="login-bg container-fluid vh-100">
+      <img
+        src={gilImage}
+        alt="gil"
+        className="gil-login"
+      />
       <div className="row h-100">
         {/* PROJECT NAME COLUMN */}
         <div className="col-md-6 d-flex justify-content-center align-items-center">
           <div className="d-flex flex-row flex-md-column align-items-center">
-            <h1 className="text-white me-3 me-md-0 mb-md-3">MG project</h1>
             <img
-              src={projectLogo}
+              src="/MG-logo.png"
               alt="MG"
-              style={{ width: "50px" }}
+              className="project-logo"
             />
+            <h1 className="text-white fw-bold ms-3 mt-2 ms-md-0 mt-md-4">MyGil</h1>
           </div>
         </div>
 
@@ -55,12 +71,12 @@ function LoginPage() {
         <div className="col-md-6 d-flex justify-content-center align-items-center">
           <form
             key={isSignIn ? "signin" : "signup"}  // unmount/remount form when switching
-            className="p-4 border rounded bg-light"
+            className="p-4 border rounded"
             style={{ minWidth: "300px" }}
             onSubmit={handleSubmit}
           >
             {/* HEADING */}
-            <div className="text-center mb-3">
+            <div className="text-center mb-3 text-dark">
               <h2>{isSignIn ? "Sign-in" : "Sign-up"}</h2>
             </div>
 
@@ -73,6 +89,8 @@ function LoginPage() {
                 placeholder="Email address"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                onFocus={() => setGilImage(gilLookRight)}
+                onBlur={() => setGilImage(gilLookFront)}
                 required
               />
             </div>
@@ -86,6 +104,8 @@ function LoginPage() {
                 placeholder={isSignIn ? "Password" : "Create password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onFocus={() => setGilImage(gilLookDown)}
+                onBlur={() => setGilImage(gilLookFront)}
                 required
               />
             </div>
@@ -111,7 +131,8 @@ function LoginPage() {
                   placeholder="Confirm password"
                   value={cPassword}
                   onChange={(e) => setCPassword(e.target.value)}
-                  onFocus={() => setError("")}
+                  onFocus={onFocusConfirmPassword}
+                  onBlur={() => setGilImage(gilLookUp)}
                   required
                 />
                 {error && <div className="invalid-feedback">{error}</div>}
@@ -119,7 +140,7 @@ function LoginPage() {
             )}
 
             {/* SUBMIT BUTTON */}
-            <button type="submit" className="btn btn-primary w-100 mb-3">
+            <button type="submit" className="submit-login btn w-100 mb-3 text-light">
               {isSignIn ? "Sign-in" : "Sign-up"}
             </button>
 
@@ -158,19 +179,15 @@ function LoginPage() {
             {/* GOOGLE LOGIN BUTTON */}
             <button
               type="button"
-              className="btn btn-secondary w-100 d-flex align-items-center justify-content-center"
-              style={{ position: "relative" }}
-              onClick={() => window.open("https://accounts.google.com/o/oauth2/v2/auth", "blank", "noopener,noreferrer")} //have to modify later
+              className="google-login btn btn-secondary w-100 d-flex align-items-center justify-content-center"
+              onClick={() =>
+                window.open("https://accounts.google.com/o/oauth2/v2/auth", "blank", "noopener,noreferrer")
+              } // need modify ^
             >
               <img
                 src={googleLogo}
                 alt="Google"
-                style={{
-                  position: "absolute",
-                  left: "12px",
-                  width: "20px",
-                  height: "20px"
-                }}
+                className="google-logo"
               />
               <span>Login with Google</span>
             </button>

@@ -1,9 +1,66 @@
+.login-bg {
+  background-color: rgba(28, 52, 84, 1);
+}
+
+.gil-login {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 10rem;
+  background: transparent;
+  border: none;
+  z-index: 500;
+}
+
+.project-logo {
+  width: 120px;
+  z-index: 1000;
+}
+
+@media (max-width: 768px) { /* Bootstrap's md breakpoint */
+  .project-logo {
+    width: 50px;
+  }
+  .gil-login {
+    width: 5rem;
+  }
+}
+
+h1 {
+  font-family: "Lucida Console", "Courier New", monospace;
+}
+
+form {
+  background-color: rgba(243, 235, 235, 1);
+  z-index: 1000;
+}
+
+/* INPUTS LOGIN FORM */
 input:user-invalid {
   border: 1px solid red;
   background-color: rgba(255, 192, 203, 0.5);
 }
-
 input:user-invalid:focus {
   border: 1px solid red;
   outline: 4px solid pink;
+}
+
+/* SUBMIT LOGIN BUTTON */
+button.submit-login {
+  background-color: rgba(140, 187, 203, 1);
+}
+button.submit-login:hover {
+  background-color: rgba(121, 164, 179, 1);
+}
+
+/* GOOGLE LOGIN */
+.google-login {
+  position: relative;
+}
+
+.google-logo {
+  position: absolute;
+  left: 12px;
+  width: 20px;
+  height: 20px;
 }
