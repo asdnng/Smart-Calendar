@@ -7,9 +7,17 @@
   border: none;
 }
 
-.menu-panel a:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: -1;
+}
+.menu-overlay.open {
+  z-index: 1000;
 }
 
 .menu-panel {
@@ -22,9 +30,21 @@
   color: white;
   padding-top: 25px;
   transition: left 0.3s ease;
-  z-index: 1000;
+  z-index: 1050;
 }
-
 .menu-panel.open {
   left: 0;
+}
+
+h5 {
+  font-family: "Lucida Console", "Courier New", monospace;
+}
+
+/* MENU OPTIONS */
+.menu-panel li button {
+  background-color: transparent;
+}
+.menu-panel li button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
 }
