@@ -1,22 +1,6 @@
 # Context-aware Smart Calendar
-
-Framework used: Backend-Spring boot, Frontend-React.
-
-Programming language used: Java, HTML, JavaScripts, CSS.  (might be changed)  
-Design/Frontend: Mun.  
-Backend: Gyeongyeong.
-
-## Run info for Mun
-1. run spring server(if you want to use API!)(http://localhost:8080)
-2. If you want to just check frontend, you can skip step 1.
-```commandline
-3. npm start  //(in MG/src/main/frontend)
-```
-4. React can check state dynamically (this is the one of React's advantages!)
-
-5. Then you can check frontend in your browser: http://localhost:3000
-
-🍒before edit!🍒
+This application can manage users schedules and tasks with AI-powered suggestions, summaries and prioritization.
+It evolves from a simple calendar into a true scheduling assistant.
 
 ```
 git fetch origin
@@ -24,32 +8,42 @@ git fetch origin
 git switch frontend(backend)
 git rebase origin/master
 ```
+```
+npm install
+npm start
+```
 
-## what is the purpose af API: 
+
+## List of API (minimum ver. might be added more later) -working
+- /api/oauth/login
+- /api/member
+- 
+
+## DB selection -TODO
+- MongoDB(nosql) or Mysql(most likely)
+## Backend Architecture -working
+-
+## Class diagram - TODO
+-
+
+## Used library -working
+- lombok
+- OAuth2client
+- Spring security
+- Spring Data JPA
+- Spring web
+- MySQL driver(not yet)
+
+## Spring MVC framework -working
+- servlet
+
+
+# Appendix
+
+### what is the purpose af API: 
 
 1. To ensure backend and frontend developers are on the same page regarding the results of their planning.
 2. Because backend and frontend developers need a reference document when communicating about tasks.
-
-## List of API (minimum ver. might be added more later)
-
-| Category       | HTTP Method | Endpoint(not specified yet😅| Description                                   |
-|----------------|-------------|-----------------------------|-----------------------------------------------|
-| **Auth**       | GET         | `/auth/login-url`           | Get OAuth login URL for calendar provider     |
-|                | GET         | `/auth/callback`            | OAuth2 callback handler                       |
-|                | GET         | `/auth/me`                  | Get current authenticated user info           |
-| **Preferences**| GET         | `/me/preferences`           | Fetch user preferences                        |
-|                | PUT         | `/me/preferences`           | Update user preferences                       |
-| **Chat**       | POST        | `/chat/complete`            | Send user message, get AI reply & tool calls  |
-|                | POST        | `/chat/confirm`             | Confirm and execute a proposed action         |
-| **Schedule**   | POST        | `/schedule/find-free-slots` | Find mutually available meeting slots         |
-| **Events**     | GET         | `/events`                   | List events within a date range               |
-|                | GET         | `/events/{id}`              | Get a specific event                          |
-|                | POST        | `/events`                   | Create a new event (proposed → confirm)       |
-|                | PATCH       | `/events/{id}`              | Update/move an event                          |
-
-
-
-## Additional Information for Mun who Feels Confused
 
 ### What is Axios?  
 Axios is a popular JavaScript library used to make HTTP requests (e.g., GET, POST, PUT, DELETE) to a server. It is often used in frontend development to communicate with backend APIs.
@@ -75,8 +69,5 @@ axios.get('https://api.example.com/data')
     console.error('errrrrror occurrr:', error);
   });
 ```
-### Which file should Mun start working on?
-MG/src/main/frontend/src/App.js    
-in this project, App.js serves as the main entry point for the React application. It is the root component where other components can be integrated and where the main logic for rendering the frontend begins.
 
 ### Go for it! 화이팅! suu suu ! 
