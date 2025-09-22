@@ -19,8 +19,10 @@ npm start
 - /api/member
 - 
 
-## DB selection -TODO
-- MongoDB(nosql) or Mysql(most likely)
+## DB selection -Working
+- Mysql(serving by Docker)
+- DBname : db1
+- DBport : 3306
 ## Backend Architecture -working
 -
 ## Class diagram - TODO
@@ -32,7 +34,7 @@ npm start
 - Spring security
 - Spring Data JPA
 - Spring web
-- MySQL driver(not yet)
+- MySQL driver
 
 ## Spring MVC framework -working
 - servlet
