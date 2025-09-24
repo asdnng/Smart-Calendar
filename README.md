@@ -15,14 +15,21 @@ npm start
 
 
 ## List of API (minimum ver. might be added more later) -working
-- /api/oauth/login
-- /api/member
+- /user
+- /user/exist
 - 
 
 ## DB selection -Working
 - Mysql(serving by Docker)
+- Container name: MG
 - DBname : db1
 - DBport : 3306
+
+check DB STATUS
+```
+docker ps
+docker exec -it MG mysql -u root -p
+```
 ## Backend Architecture -working
 -
 ## Class diagram - TODO
