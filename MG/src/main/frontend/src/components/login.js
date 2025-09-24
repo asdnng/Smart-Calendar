@@ -9,8 +9,6 @@ import gilLookDown from '../assets/gil-corner-lookdown.png';
 
 import '../cssModules/login.css';
 
-//const BACKEND_API_BASE_URL = import.meta.env.REACT_BACKEND_API_BASE_URL;
-
 function LoginPage() {
   /* SIGN-IN/SIGN-OUT TRIGGER VARIABLES */
   const [isSignIn, setIsSignIn] = useState(true);
