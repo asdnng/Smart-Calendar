@@ -1,23 +1,20 @@
-package project_MG.MG.domain;
+package project_MG.MG.domain.member.entity;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.tomcat.util.codec.binary.StringUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import project_MG.MG.domain.DTO.MemberRequestDTO;
+import project_MG.MG.domain.member.DTO.MemberRequestDTO;
 
 import java.time.LocalDateTime;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "members_entity")
+@Table(name = "member_member_entity")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
