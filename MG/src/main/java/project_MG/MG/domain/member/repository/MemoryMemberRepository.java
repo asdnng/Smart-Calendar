@@ -1,6 +1,6 @@
 //package project_MG.MG.repository;
 //import org.springframework.stereotype.Repository;
-//import project_MG.MG.domain.Member;
+//import project_MG.MG.domain.entity.Member;
 //
 //import java.util.*;
 //
