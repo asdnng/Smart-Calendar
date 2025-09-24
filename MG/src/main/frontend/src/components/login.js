@@ -9,6 +9,8 @@ import gilLookDown from '../assets/gil-corner-lookdown.png';
 
 import '../cssModules/login.css';
 
+//const BACKEND_API_BASE_URL = import.meta.env.REACT_BACKEND_API_BASE_URL;
+
 function LoginPage() {
   /* SIGN-IN/SIGN-OUT TRIGGER VARIABLES */
   const [isSignIn, setIsSignIn] = useState(true);
@@ -38,14 +40,6 @@ function LoginPage() {
       setGilImage(gilLookFront);
     } else { navigate("/dashboard"); }
   };
-
-//  const googleLogin = () => {
-//      window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?
-//  		client_id=${process.env.REACT_APP_GOOGLE_AUTH_CLIENT_ID}
-//  		&redirect_uri=${process.env.REACT_APP_GOOGLE_AUTH_REDIRECT_URI}
-//  		&response_type=code
-//  		&scope=email profile`;
-//  };
 
   return (
     <div className="login-bg container-fluid vh-100">
