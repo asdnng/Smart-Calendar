@@ -30,7 +30,7 @@ public class JwtService {
         // cookie list
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
-            throw new RuntimeException("쿠키가 존재하지 않습니다.");
+            throw new RuntimeException("cookie does not exist.");
         }
 
         // get Refresh token
@@ -43,13 +43,13 @@ public class JwtService {
         }
 
         if (refreshToken == null) {
-            throw new RuntimeException("refreshToken 쿠키가 없습니다.");
+            throw new RuntimeException("refreshToken cookie does not exist.");
         }
 
         // Refresh token verification
         Boolean isValid = JWTUtil.isValid(refreshToken, false);
         if (!isValid) {
-            throw new RuntimeException("유효하지 않은 refreshToken입니다.");
+            throw new RuntimeException("Invalid refreshToken.");
         }
 
         // info extraction
@@ -90,12 +90,12 @@ public class JwtService {
         // Refresh token verification
         Boolean isValid = JWTUtil.isValid(refreshToken, false);
         if (!isValid) {
-            throw new RuntimeException("유효하지 않은 refreshToken입니다.");
+            throw new RuntimeException("Invalid refreshToken.");
         }
 
         // check RefreshEntity (whitelist)
         if (!existsRefresh(refreshToken)) {
-            throw new RuntimeException("유효하지 않은 refreshToken입니다.");
+            throw new RuntimeException("Invalid refreshToken.");
         }
 
         // info extraction
