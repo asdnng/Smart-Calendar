@@ -2,7 +2,7 @@
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import LoginPage from './components/login.js';
+import LoginPage from './components/login/login.js';
 import DashboardPage from './components/dashboard.js';
 
 import './App.css';
