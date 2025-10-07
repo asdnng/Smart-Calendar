@@ -37,14 +37,14 @@ function LoginPage() {
   }, [navigate]);
 
   /* SIGNIN/SIGNUP AUTHORIZATION */
-  // token from API
+  // token from API// please be aware when write the endpoint. we don't have /sessions and /users api.
   const handleSubmitForm = async (formData) => {
     try {
       const res = isSignIn
-        ? await api.post("/sessions", formData) // sign in
-        : await api.post("/users", formData);  // sign up
+        ? await api.post("/login", formData) // sign in
+        : await api.post("/user", formData);  // sign up
       console.log("Success: ", res.status, res.statusText, "\n", res.data);
-      authSuccess(res.data.token, "Web");
+      authSuccess(res.data.accessToken, res.data.refreshToken, "Web");
     } catch (err) {
       handleGil("up");
 
