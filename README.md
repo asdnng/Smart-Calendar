@@ -17,6 +17,7 @@ npm start
 ## List of API (minimum ver. might be added more later) -working
 - /user
 - /user/exist
+- /login
 - (can test API by using postman ^^)
 
 ## DB selection -Working
