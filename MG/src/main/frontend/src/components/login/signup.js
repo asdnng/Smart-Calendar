@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import googleLogo from '../../assets/google-logo.png';
 
-function SignUp({ onSubmit, onSwitch, gilRight, gilDown, gilFront, gilUp }) {
+function SignUp({ onSwitch, onSubmit, onGoogle, setGil }) {
   const [email, setEmail] = useState("");  // being email and username, unique
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
@@ -10,7 +10,7 @@ function SignUp({ onSubmit, onSwitch, gilRight, gilDown, gilFront, gilUp }) {
 
   const onFocusCPassword = () => {
     setError("");
-    gilDown();
+    setGil("down");
   };
 
   const handleSubmit = (e) => {
@@ -19,7 +19,7 @@ function SignUp({ onSubmit, onSwitch, gilRight, gilDown, gilFront, gilUp }) {
 
     if (cPassword !== password) {
       setError("Password does not match");
-      gilFront();
+      setGil("front");
     } else {
       const at = email.indexOf('@');
       const name = email.slice(0, at);  // displayed name, later changable, non unique
@@ -47,8 +47,8 @@ function SignUp({ onSubmit, onSwitch, gilRight, gilDown, gilFront, gilUp }) {
           placeholder="Email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          onFocus={gilRight}
-          onBlur={gilFront}
+          onFocus={() => setGil("right")}
+          onBlur={() => setGil("front")}
           required
         />
       </div>
@@ -62,8 +62,8 @@ function SignUp({ onSubmit, onSwitch, gilRight, gilDown, gilFront, gilUp }) {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          onFocus={gilDown}
-          onBlur={gilFront}
+          onFocus={() => setGil("down")}
+          onBlur={() => setGil("front")}
           required
         />
       </div>
@@ -77,7 +77,7 @@ function SignUp({ onSubmit, onSwitch, gilRight, gilDown, gilFront, gilUp }) {
           value={cPassword}
           onChange={(e) => setCPassword(e.target.value)}
           onFocus={onFocusCPassword}
-          onBlur={gilUp}
+          onBlur={() => setGil("up")}
           required
         />
         {error && <div className="invalid-feedback">{error}</div>}
@@ -112,9 +112,7 @@ function SignUp({ onSubmit, onSwitch, gilRight, gilDown, gilFront, gilUp }) {
       <button
         type="button"
         className="google-login btn btn-secondary w-100 d-flex align-items-center justify-content-center"
-        onClick={() =>
-          window.open("https://accounts.google.com/o/oauth2/v2/auth", "blank", "noopener,noreferrer")
-        } // need modify ^
+        onClick={onGoogle}
       >
         <img
           src={googleLogo}

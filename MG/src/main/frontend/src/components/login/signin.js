@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import googleLogo from '../../assets/google-logo.png';
 
-function SignIn({ onSubmit, onSwitch, gilRight, gilDown, gilFront }) {
+function SignIn({ onSwitch, onSubmit, onGoogle, setGil }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -31,8 +31,8 @@ function SignIn({ onSubmit, onSwitch, gilRight, gilDown, gilFront }) {
           placeholder="Email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          onFocus={gilRight}
-          onBlur={gilFront}
+          onFocus={() => setGil("right")}
+          onBlur={() => setGil("front")}
           required
         />
       </div>
@@ -46,8 +46,8 @@ function SignIn({ onSubmit, onSwitch, gilRight, gilDown, gilFront }) {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          onFocus={gilDown}
-          onBlur={gilFront}
+          onFocus={() => setGil("down")}
+          onBlur={() => setGil("front")}
           required
         />
       </div>
@@ -91,9 +91,7 @@ function SignIn({ onSubmit, onSwitch, gilRight, gilDown, gilFront }) {
       <button
         type="button"
         className="google-login btn btn-secondary w-100 d-flex align-items-center justify-content-center"
-        onClick={() =>
-          window.open("https://accounts.google.com/o/oauth2/v2/auth", "blank", "noopener,noreferrer")
-        } // need modify ^
+        onClick={onGoogle}
       >
         <img
           src={googleLogo}
