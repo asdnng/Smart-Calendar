@@ -30,11 +30,6 @@ check DB STATUS
 docker ps
 docker exec -it MG mysql -u root -p
 ```
-## Backend Architecture -working
--
-## Class diagram - TODO
--
-
 ## Used library -working
 - lombok
 - OAuth2client
@@ -42,10 +37,6 @@ docker exec -it MG mysql -u root -p
 - Spring Data JPA
 - Spring web
 - MySQL driver
-
-## Spring MVC framework -working
-- servlet
-
 
 # Appendix
 
