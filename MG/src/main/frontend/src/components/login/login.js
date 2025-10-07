@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useCallback } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-import api from '../../api.js';
+import api from '../../axiosSetup.js';
 import SignIn from './signin.js';
 import SignUp from './signup.js';
 
@@ -13,42 +13,70 @@ import gilLookDown from '../../assets/gil-corner-lookdown.png';
 import '../../cssModules/login.css';
 
 function LoginPage() {
-  /* TRIGGER VARIABLES */
   const [isSignIn, setIsSignIn] = useState(true);
-  const toggleForm = () => setIsSignIn(!isSignIn);
-
   const [gilImage, setGilImage] = useState(gilLookUp);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
-  /* API CALL */
-  const handleAuth = async (formData) => {
+  const handleGil = (look) => {
+    if (look === "right") { setGilImage(gilLookRight); }
+    else if (look === "down") { setGilImage(gilLookDown); }
+    else if (look === "front") { setGilImage(gilLookFront); }
+    else { setGilImage(gilLookUp); }
+  };
+
+  const authSuccess = useCallback((token, method) => {
+    localStorage.setItem("token", token);  // store JWT from backend
+    console.log(`${method} token stored: `, token);
+    navigate("/dashboard", { replace: true });
+
+//    if (location.search.includes("token=")) {
+//      window.history.replaceState({}, document.title, "/dashboard");
+//    }
+  }, [navigate]);
+
+  /* SIGNIN/SIGNUP AUTHORIZATION */
+  // token from API
+  const handleSubmitForm = async (formData) => {
     try {
-      let res;
-      if (isSignIn) { res = await api.post("/sessions", formData); }
-      else { res = await api.post("/api/users", formData); }
-      console.log("Success: ", res.status, res.statusText, "\n",res.data);
-
-      navigate("/dashboard");
+      const res = isSignIn
+        ? await api.post("/sessions", formData) // sign in
+        : await api.post("/users", formData);  // sign up
+      console.log("Success: ", res.status, res.statusText, "\n", res.data);
+      authSuccess(res.data.token, "Web");
     } catch (err) {
-      setGilImage(gilLookUp);
+      handleGil("up");
 
       if (err.response) {
-        if (formData.name) {
-          alert(`Oh damn, API is not working ${formData.name} : (`);
-        } else {
-          alert("Oh damn, API is not working : (");
-        }
+        alert(`Oh damn, server error ${formData.name ? formData.name : ""} :O`);
         console.log("Error response: ", err.response.status, err.response.statusText, "\n", err.response.data);
-      } else {
+      } else if (err.request) {
         alert("Probably network error :/");
         console.log("Requested but no response: ", err.request);
+      } else {
+        alert("Something went wrong :(")
+        console.log("Unknown error: ", err.message);
       }
       console.log("Data requested: ", err.config.data);
 
-      setTimeout(() => { setGilImage(gilLookFront); }, 100);
+      setTimeout(() => handleGil("front"), 100);
     }
   };
+
+  /* GOOGLE AUTHORIZATION */
+  // token from URL
+  const handleGoogleLogin = () => {
+    // redirect to backend endpoint -> Google OAuth
+    window.location.href = "http://localhost:8080/auth/google"; // need modify
+//    window.open("https://accounts.google.com/o/oauth2/v2/auth", "blank", "noopener,noreferrer")
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const token = params.get("token");
+    if (token) { authSuccess(token, "Google"); }
+  }, [location.search, authSuccess]);
 
   return (
     <div className="login-bg container-fluid vh-100">
@@ -74,20 +102,17 @@ function LoginPage() {
         <div className="col-md-6 d-flex justify-content-center align-items-center">
           {isSignIn ? (
             <SignIn
-              onSubmit={handleAuth}
-              onSwitch={toggleForm}
-              gilRight={() => setGilImage(gilLookRight)}
-              gilDown={() => setGilImage(gilLookDown)}
-              gilFront={() => setGilImage(gilLookFront)}
+              onSwitch={() => setIsSignIn(!isSignIn)}
+              onSubmit={handleSubmitForm}
+              onGoogle={handleGoogleLogin}
+              setGil={handleGil}
             />
           ) : (
             <SignUp
-              onSubmit={handleAuth}
-              onSwitch={toggleForm}
-              gilRight={() => setGilImage(gilLookRight)}
-              gilDown={() => setGilImage(gilLookDown)}
-              gilFront={() => setGilImage(gilLookFront)}
-              gilUp={() => setGilImage(gilLookUp)}
+              onSwitch={() => setIsSignIn(!isSignIn)}
+              onSubmit={handleSubmitForm}
+              onGoogle={handleGoogleLogin}
+              setGil={handleGil}
             />
           )}
         </div>
