@@ -14,40 +14,35 @@ npm start
 ```
 
 ## How authentification work (for mun)
-1. User Sign Up
-   ↓
-   Frontend: POST /user with email & password
-   ↓
-   Backend: Creates account
-   ↓
-   Returns: memberId(its mean literally id using DB!)
 
-2. User Login
-   ↓
-   Frontend: POST /login with username (email) & password
-   ↓
-   Backend: Checks credentials
-   ↓
-   Returns: accessToken + refreshToken
-   ↓
-   Frontend: SAVE BOTH TOKENS!
+### 1. User Sign Up
+1. **Frontend** → `POST /user` with `email` & `password`  
+2. **Backend** → Creates a new user account  
+3. **Response** → Returns `memberId` (database ID! not user id :D)
 
-3. Access Protected Pages
-   ↓
-   Frontend: Send requests with "Authorization: Bearer {accessToken}" header
-   ↓
-   Backend: Checks if token is valid
-   ↓
-   Returns: Requested data
+---
 
-4. Token Expires (after 1 hour)
-   ↓
-   Frontend: POST /jwt/refresh with refreshToken
-   ↓
-   Backend: Issues new tokens
-   ↓
-   Frontend: Update stored tokens
+### 2. User Login
+1. **Frontend** → `POST /login` with `username (email)` & `password`  
+2. **Backend** → Validates credentials  
+3. **Response** → Returns `accessToken` and `refreshToken`  
+4. **Frontend** → Save both tokens securely (e.g., localStorage or cookies)
 
+---
+
+### 3. Access Protected Pages
+1. **Frontend** → Send requests with header:  
+2. **Backend** → Verifies access token validity  
+3. **Response** → Returns requested data
+
+---
+
+### 4. Token Refresh (When Access Token Expires)
+1. **Frontend** → `POST /jwt/refresh` with `refreshToken`  
+2. **Backend** → Issues new `accessToken` and `refreshToken`  
+3. **Frontend** → Update stored tokens
+
+---
 
 
 ## List of API (minimum ver. might be added more later) -working
