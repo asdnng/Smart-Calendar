@@ -3,12 +3,12 @@ import { useState } from 'react';
 import googleLogo from '../../assets/google-logo.png';
 
 function SignIn({ onSwitch, onSubmit, onGoogle, setGil }) {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ email, password });
+    onSubmit({ username, password });
   };
 
   return (
@@ -29,8 +29,8 @@ function SignIn({ onSwitch, onSubmit, onGoogle, setGil }) {
           className="form-control"
           id="inputEmail"
           placeholder="Email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           onFocus={() => setGil("right")}
           onBlur={() => setGil("front")}
           required

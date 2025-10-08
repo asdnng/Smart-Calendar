@@ -3,7 +3,7 @@ import { useState } from 'react';
 import googleLogo from '../../assets/google-logo.png';
 
 function SignUp({ onSwitch, onSubmit, onGoogle, setGil }) {
-  const [email, setEmail] = useState("");  // being email and username, unique
+  const [username, setUsername] = useState("");  // being email and username, unique
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
   const [error, setError] = useState("");
@@ -21,9 +21,9 @@ function SignUp({ onSwitch, onSubmit, onGoogle, setGil }) {
       setError("Password does not match");
       setGil("front");
     } else {
-      const at = email.indexOf('@');
-      const name = email.slice(0, at);  // displayed name, later changable, non unique
-      onSubmit({ email, password, name });
+      const at = username.indexOf('@');
+      const name = username.slice(0, at);  // displayed name, later changable, non unique
+      onSubmit({ username, password});
     }
   };
 
@@ -45,8 +45,8 @@ function SignUp({ onSwitch, onSubmit, onGoogle, setGil }) {
           className="form-control"
           id="inputEmail"
           placeholder="Email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           onFocus={() => setGil("right")}
           onBlur={() => setGil("front")}
           required
