@@ -13,12 +13,50 @@ npm install
 npm start
 ```
 
+## How authentification work (for mun)
 
-## List of API (minimum ver. might be added more later) -working
-- /user
-- /user/exist
-- /login
-- (can test API by using postman ^^)
+### 1. User Sign Up
+1. **Frontend** → `POST /user` with `email` & `password`  
+2. **Backend** → Creates a new user account  
+3. **Response** → Returns `memberId` (database ID! not user id :D)
+
+---
+
+### 2. User Login
+1. **Frontend** → `POST /login` with `username (email)` & `password`  
+2. **Backend** → Validates credentials  
+3. **Response** → Returns `accessToken` and `refreshToken`  
+4. **Frontend** → Save both tokens securely (e.g., localStorage or cookies)
+
+---
+
+### 3. Access Protected Pages
+1. **Frontend** → Send requests with header:  
+2. **Backend** → Verifies access token validity  
+3. **Response** → Returns requested data
+
+---
+
+### 4. Token Refresh (When Access Token Expires)
+1. **Frontend** → `POST /jwt/refresh` with `refreshToken`  
+2. **Backend** → Issues new `accessToken` and `refreshToken`  
+3. **Frontend** → Update stored tokens
+
+---
+
+
+## List of API(reference table for Mun)
+(But currently I didnt modify DTO, and service logic(it still needs 4 varaible for login) so, we cannot login rn but I ll modify soon!)
+
+| Action           | Method | Endpoint       | Need Token? | Send                              | Get           |
+|------------------|---------|----------------|--------------|-----------------------------------|----------------|
+| Sign up          | POST    | /user          | ❌ No         | email, password                   | memberId       |
+| Check email      | POST    | /user/exist    | ❌ No         | email                             | true / false   |
+| Login            | POST    | /login         | ❌ No         | username, password                | tokens         |
+| Get profile      | GET     | /user          | ✅ Yes        | -                                 | user info      |
+| Update profile   | PUT     | /user          | ✅ Yes        | email, password                   | userId         |
+| Delete account   | DELETE  | /user          | ✅ Yes        | email                             | true           |
+| Refresh token    | POST    | /jwt/refresh   | ❌ No         | refreshToken                      | new tokens     |
 
 ## DB selection -Working
 - Mysql(serving by Docker)
