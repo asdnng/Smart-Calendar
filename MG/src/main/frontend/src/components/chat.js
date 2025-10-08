@@ -6,7 +6,7 @@ import { BsEmojiLaughing } from 'react-icons/bs';
 import '../cssModules/chat.css';
 
 const mainMsg = "So stubborn. But if you're still sick, get well soon na";
-const finalMsg = "STOP IT. You have ADHD?"
+const finalMsg = "keep going~~goood good goood you are not ADHD ^^"//"STOP IT. You have ADHD?"
 var count = 0;
 var msg = mainMsg;
 function Chat() {
