@@ -66,10 +66,8 @@ function LoginPage() {
 
   /* GOOGLE AUTHORIZATION */
   // token from URL
-  const handleGoogleLogin = () => {
-    // redirect to backend endpoint -> Google OAuth
-    window.location.href = "http://localhost:8080/auth/google"; // need modify
-//    window.open("https://accounts.google.com/o/oauth2/v2/auth", "blank", "noopener,noreferrer")
+  const handleGoogleLogin = (provider) => {
+      window.location.href = `/oauth2/authorization/${provider}`;
   };
 
   useEffect(() => {

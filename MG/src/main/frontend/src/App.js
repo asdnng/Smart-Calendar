@@ -4,6 +4,7 @@ import { Navigate, BrowserRouter as Router, Routes, Route } from 'react-router-d
 
 import LoginPage from './components/login/login.js';
 import DashboardPage from './components/dashboard.js';
+import CookiePage from './components/login/CookiePage.js';
 
 import './App.css';
 
