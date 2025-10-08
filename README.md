@@ -54,7 +54,7 @@ npm start
 | Check email      | POST    | /user/exist    | ❌ No         | email                             | true / false   |
 | Login            | POST    | /login         | ❌ No         | username, password                | tokens         |
 | Get profile      | GET     | /user          | ✅ Yes        | -                                 | user info      |
-| Update profile   | PUT     | /user          | ✅ Yes        | email, password, nickname         | userId         |
+| Update profile   | PUT     | /user          | ✅ Yes        | email, password                   | userId         |
 | Delete account   | DELETE  | /user          | ✅ Yes        | email                             | true           |
 | Refresh token    | POST    | /jwt/refresh   | ❌ No         | refreshToken                      | new tokens     |
 
