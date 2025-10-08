@@ -45,11 +45,18 @@ npm start
 ---
 
 
-## List of API (minimum ver. might be added more later) -working
-- /user
-- /user/exist
-- /login
-- (can test API by using postman ^^)
+## List of API(reference table for Mun)
+(But currently I didnt modify DTO, and service logic(it still needs 4 varaible for login) so, we cannot login rn but I ll modify soon!)
+
+| Action           | Method | Endpoint       | Need Token? | Send                              | Get           |
+|------------------|---------|----------------|--------------|-----------------------------------|----------------|
+| Sign up          | POST    | /user          | ❌ No         | email, password                   | memberId       |
+| Check email      | POST    | /user/exist    | ❌ No         | email                             | true / false   |
+| Login            | POST    | /login         | ❌ No         | username, password                | tokens         |
+| Get profile      | GET     | /user          | ✅ Yes        | -                                 | user info      |
+| Update profile   | PUT     | /user          | ✅ Yes        | email, password, nickname         | userId         |
+| Delete account   | DELETE  | /user          | ✅ Yes        | email                             | true           |
+| Refresh token    | POST    | /jwt/refresh   | ❌ No         | refreshToken                      | new tokens     |
 
 ## DB selection -Working
 - Mysql(serving by Docker)
