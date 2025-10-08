@@ -13,6 +13,42 @@ npm install
 npm start
 ```
 
+## How authentification work (for mun)
+1. User Sign Up
+   ↓
+   Frontend: POST /user with email & password
+   ↓
+   Backend: Creates account
+   ↓
+   Returns: memberId(its mean literally id using DB!)
+
+2. User Login
+   ↓
+   Frontend: POST /login with username (email) & password
+   ↓
+   Backend: Checks credentials
+   ↓
+   Returns: accessToken + refreshToken
+   ↓
+   Frontend: SAVE BOTH TOKENS!
+
+3. Access Protected Pages
+   ↓
+   Frontend: Send requests with "Authorization: Bearer {accessToken}" header
+   ↓
+   Backend: Checks if token is valid
+   ↓
+   Returns: Requested data
+
+4. Token Expires (after 1 hour)
+   ↓
+   Frontend: POST /jwt/refresh with refreshToken
+   ↓
+   Backend: Issues new tokens
+   ↓
+   Frontend: Update stored tokens
+
+
 
 ## List of API (minimum ver. might be added more later) -working
 - /user
