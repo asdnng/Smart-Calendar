@@ -20,8 +20,8 @@ public class MemberRequestDTO {
     private String username;
     @NotBlank(groups = {addGroup.class, updateGroup.class}) @Size(min = 4)
     private String password;
-    @NotBlank(groups = {addGroup.class, updateGroup.class})
-    private String nickname;
+//    @NotBlank(groups = {addGroup.class, updateGroup.class})
+//    private String nickname;
     @Email(groups = {addGroup.class, updateGroup.class})
     private String email;
 }

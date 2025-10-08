@@ -64,8 +64,8 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
                 .isLock(false)
                 .isSocial(false)
                 .roleType(UserRoleType.USER) // default role
-                .nickname(dto.getNickname())
-                .email(dto.getEmail())
+                //.nickname(dto.getNickname())
+                //.email(dto.getEmail())
                 .build();
 
         return memberRepository.save(member).getId();
@@ -140,7 +140,7 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
 
             // update existing user
             MemberRequestDTO dto = new MemberRequestDTO();
-            dto.setNickname(nickname);
+            //dto.setNickname(nickname);
             dto.setEmail(email);
             entity.get().updateMember(dto);
 
@@ -155,8 +155,8 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
                     .isSocial(true)
                     .socialProviderType(SocialProviderType.valueOf(registrationId))
                     .roleType(UserRoleType.USER)
-                    .nickname(nickname)
-                    .email(email)
+                    //.nickname(nickname)
+                    //.email(email)
                     .build();
 
             memberRepository.save(entity.get());
@@ -197,7 +197,7 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
         Member member = memberRepository.findByUsernameAndIsLock(username, false)
                 .orElseThrow(() -> new UsernameNotFoundException(username + " not found."));
 
-        return new MemberResponseDTO(username, member.getIsSocial(), member.getNickname(), member.getEmail());
+        return new MemberResponseDTO(username, member.getIsSocial());
     }
 
 }

@@ -44,11 +44,11 @@ public class Member {
     @Column(name = "role_type", nullable = false)
     private UserRoleType roleType;
 
-    @Column(name = "nickname")
-    private String nickname;
-
-    @Column(name = "email")
-    private String email;
+//    @Column(name = "nickname")
+//    private String nickname;
+//
+//    @Column(name = "email")
+//    private String email;
 
     @CreatedDate
     @Column(name = "created_date", updatable = false)
@@ -60,7 +60,7 @@ public class Member {
 
 
     public void updateMember(MemberRequestDTO dto) {
-        this.email = dto.getEmail();
-        this.nickname = dto.getNickname();
+        this.username = dto.getEmail();
+        //this.nickname = dto.getNickname();
     }
 }
