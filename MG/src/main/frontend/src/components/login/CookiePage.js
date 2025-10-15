@@ -27,7 +27,7 @@ function CookiePage() {
 
             } catch (err) {
                 alert("failure");
-                navigate("/login");
+                navigate("/");
             }
 
         };
