@@ -31,7 +31,7 @@ public class MemberController {
     }
 
     //sign up
-    @PostMapping(value = "/user", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/user")
     public ResponseEntity<Map<String, Long>> joinApi(
             @Validated(MemberRequestDTO.addGroup.class) @RequestBody MemberRequestDTO dto
     ) {

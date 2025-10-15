@@ -66,9 +66,9 @@ function LoginPage() {
 
   /* GOOGLE AUTHORIZATION */
   // token from URL
-  const handleGoogleLogin = (provider) => {
-      window.location.href = `/oauth2/authorization/${provider}`;
-  };
+   const handleGoogleLogin = () => {
+     window.location.href = "http://localhost:8080/oauth2/authorization/google";
+   };
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);

@@ -122,9 +122,9 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
 
         if (registrationId.equals(SocialProviderType.GOOGLE.name())) {
             attributes = (Map<String, Object>) oAuth2User.getAttributes();
-            username = registrationId + "_" + attributes.get("sub");
-            email = attributes.get("email").toString();
-            nickname = attributes.get("name").toString();
+            username = attributes.get("email").toString();
+            //email =
+            //nickname = attributes.get("name").toString();
         }
         else {
             throw new OAuth2AuthenticationException("not supporting login.");
@@ -141,7 +141,7 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
             // update existing user
             MemberRequestDTO dto = new MemberRequestDTO();
             //dto.setNickname(nickname);
-            dto.setEmail(email);
+            //dto.setEmail(email);
             entity.get().updateMember(dto);
 
             memberRepository.save(entity.get());
@@ -159,7 +159,7 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
                     //.email(email)
                     .build();
 
-            memberRepository.save(entity.get());
+            memberRepository.save(member);
         }
         authorities = List.of(new SimpleGrantedAuthority(role));
 
