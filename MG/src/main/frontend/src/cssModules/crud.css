@@ -69,6 +69,10 @@ button.delete-task:hover {
   border: 1px solid rgba(28, 52, 84, 1);
 }
 
+.time-error {
+  border: 1px solid red !important;
+}
+
 .form-description {
   display: flex;
   flex-direction: column;
