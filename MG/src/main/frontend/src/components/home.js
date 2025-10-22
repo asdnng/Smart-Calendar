@@ -1,4 +1,4 @@
-function Body() {
+function DashboardHome() {
   return (
     <div className="row flex-grow-1">
       {/*<div className="col-2 bg-light d-flex justify-content-center align-items-center p-3">Menu</div>*/}
@@ -10,4 +10,4 @@ function Body() {
   );
 }
 
-export default Body;
+export default DashboardHome;
