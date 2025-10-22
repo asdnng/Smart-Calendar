@@ -1,36 +1,39 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { BsFillSendFill } from 'react-icons/bs';
 import { BsEmojiLaughing } from 'react-icons/bs';
 
 import '../cssModules/chat.css';
 
-const mainMsg = "So stubborn. But if you're still sick, get well soon na";
-const finalMsg = "keep going~~goood good goood you are not ADHD ^^"//"STOP IT. You have ADHD?"
-var count = 0;
-var msg = mainMsg;
+const msg1 = "Mwo dowajulkka?";
+const msg2 = "Sikee, ajik ihae mot haesseoyo";
+const msg3 = "Neo munje isseo?";
+// "keep going~~goood good goood you are not ADHD ^^";
 function Chat() {
   const [message, setMessage] = useState("");
-
-  const [chatMsg, setChatMsg] = useState("");
+  const [chatMsg, setChatMsg] = useState("Annyeong");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setMessage("");
-    if (chatMsg) {
-      if (count >= 5) { setChatMsg(finalMsg); }
-      else {
-        setChatMsg(msg);
-        msg+="a";
-        count++;
-      }
-    }
-    else {
-      setChatMsg("Hey, I still cannot read what you sent");
-      count = 0;
-      msg = mainMsg;
+
+    if (chatMsg === msg1) {
+      setChatMsg("Jamkkanman...");
+      setTimeout(() => setChatMsg(msg2), 10000);
+    } else if (chatMsg === msg2) {
+      setChatMsg("Wae?");
+      setTimeout(() => setChatMsg(msg3), 3000);
+    } else if (chatMsg === msg3) {
+      setChatMsg("MWO?? : O");
+      setTimeout(() => setChatMsg("I'm kidding la, you're good ~"), 3000);
+    } else {
+      setChatMsg("Hehe :D");
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => setChatMsg(msg1), 3000);
+  }, []);
 
   return (
     <div className="chat d-flex flex-column vh-100 border-top">

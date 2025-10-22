@@ -4,6 +4,7 @@
 
 .chat .chat-area {
   max-width: 800px;
+  margin-top: 80px;
 }
 
 .chat .input-area {
