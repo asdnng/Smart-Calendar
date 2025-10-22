@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import api from '../../axiosSetup.js';
 import SignIn from './signin.js';
@@ -12,11 +12,10 @@ import gilLookDown from '../../assets/gil-corner-lookdown.png';
 
 import '../../cssModules/login.css';
 
-function LoginPage() {
+function LoginPage({ setAuth }) {
   const [isSignIn, setIsSignIn] = useState(true);
   const [gilImage, setGilImage] = useState(gilLookUp);
 
-  const navigate = useNavigate();
   const location = useLocation();
 
   const handleGil = (look) => {
@@ -29,22 +28,22 @@ function LoginPage() {
   const authSuccess = useCallback((token, method) => {
     localStorage.setItem("token", token);  // store JWT from backend
     console.log(`${method} token stored: `, token);
-    navigate("/dashboard", { replace: true });
+    setAuth(true);
 
 //    if (location.search.includes("token=")) {
 //      window.history.replaceState({}, document.title, "/dashboard");
-//    }
-  }, [navigate]);
+//    }http://localhost:3000/dashboard
+  }, [setAuth]);
 
   /* SIGNIN/SIGNUP AUTHORIZATION */
-  // token from API// please be aware when write the endpoint. we don't have /sessions and /users api.
+  // token from API
   const handleSubmitForm = async (formData) => {
     try {
       const res = isSignIn
         ? await api.post("/login", formData) // sign in
         : await api.post("/user", formData);  // sign up
       console.log("Success: ", res.status, res.statusText, "\n", res.data);
-      authSuccess(res.data.accessToken, res.data.refreshToken, "Web");
+      authSuccess(res.data.accessToken, "Web");
     } catch (err) {
       handleGil("up");
 

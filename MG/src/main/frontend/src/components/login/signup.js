@@ -23,7 +23,7 @@ function SignUp({ onSwitch, onSubmit, onGoogle, setGil }) {
     } else {
       const at = username.indexOf('@');
       const name = username.slice(0, at);  // displayed name, later changable, non unique
-      onSubmit({ username, password});
+      onSubmit({ username, password });
     }
   };
 
