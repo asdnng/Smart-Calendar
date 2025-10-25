@@ -40,7 +40,7 @@ function LoginPage({ setAuth }) {
   const handleSubmitForm = async (formData) => {
     try {
       const res = isSignIn
-        ? await api.post("/login", formData) // sign in
+        ? await api.post("/login", formData)  // sign in
         : await api.post("/user", formData);  // sign up
       console.log("Success: ", res.status, res.statusText, "\n", res.data);
       authSuccess(res.data.accessToken, "Web");

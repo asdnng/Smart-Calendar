@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { BsFillSendFill } from 'react-icons/bs';
-import { BsEmojiLaughing } from 'react-icons/bs';
+import { BsFillSendFill, BsEmojiLaughing } from 'react-icons/bs';
 
 import '../cssModules/chat.css';
 

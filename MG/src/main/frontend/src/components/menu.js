@@ -1,8 +1,4 @@
-import { BsCalendarPlus } from 'react-icons/bs';
-import { BsCardList } from 'react-icons/bs';
-import { BsViewList } from 'react-icons/bs';
-import { BsLayoutThreeColumns } from 'react-icons/bs';
-import { BsCalendar3 } from 'react-icons/bs';
+import { BsCalendarPlus, BsCardList, BsViewList, BsLayoutThreeColumns, BsCalendar3  } from 'react-icons/bs';
 
 import '../cssModules/menu.css';
 

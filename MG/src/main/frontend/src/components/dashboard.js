@@ -5,7 +5,7 @@ import { BsPatchPlusFill } from 'react-icons/bs';
 
 import { TasksProvider } from './Tasks.js';
 import Menu from './menu.js';
-import CRUD from './crud.js';
+import CRUD from './crud/crud.js';
 
 import '../cssModules/dashboard.css';
 import '../cssModules/menu.css';
@@ -60,7 +60,7 @@ function DashboardPage() {
         }
 
         {/* CRUD POPUP */}
-        <CRUD isOpen={crudOpen} onClose={() => setCrudOpen(false)} />
+        <CRUD isOpen={crudOpen} onClose={() => setCrudOpen(false)} mode="create" />
       </div>
     </TasksProvider>
   );
