@@ -18,13 +18,20 @@
   border-radius: 12px;
   padding: 2rem;
   min-width: 300px;
-  max-width: 500px;
+  max-width: 350px;
   box-shadow: 0px 5px 20px rgba(0,0,0,0.2);
   text-align: left;
   animation: scaleIn 0.5s ease-out;
 }
 
-/* DELETE TASK BUTTON */
+/* MODE SWITCHER */
+.crud-switcher {
+  position: absolute;
+  top: 7px;
+  right: 60px;
+}
+
+/* DELETE TASK BUTTON (create) */
 button.delete-task {
   position: absolute;
   top: 12px;
@@ -35,6 +42,38 @@ button.delete-task {
 button.delete-task:hover {
   background-color: rgba(33, 37, 41, 1);
   color: rgba(243, 235, 235, 1);
+}
+
+/* REMOVE TASK BUTTON (update) */
+button.remove-task {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: rgba(140, 187, 203, 1);
+  color: white;
+}
+button.remove-task:hover {
+  background-color: rgba(121, 164, 179, 1);
+  color: white;
+}
+
+/* CLOSE TASK BUTTON (read) */
+button.close-task {
+  position: absolute;
+  top: 5px;
+  right: 12px;
+  padding: 0px;
+  justify-content: center;
+  align-items: center;
+  font-size: x-large;
+  background-color: none;
+  color: rgba(28, 52, 84, 1);
+}
+button.close-task:hover {
+  color: rgba(33, 37, 41, 1);
+}
+.close-task:active, .close-task:focus {
+  border: none !important;
 }
 
 /* INPUTS CRUD FORM */
@@ -100,6 +139,19 @@ button.submit-crud:active {
   background-color: rgba(243, 235, 235, 1);
   border: 1px solid rgba(121, 164, 179, 1);
   color: rgba(121, 164, 179, 1);
+}
+
+/* UNDO CRUD BUTTON */
+button.undo-crud {
+  border-radius: 20px;
+  color: rgba(28, 52, 84, 1);
+}
+button.undo-crud:hover {
+  color: rgba(33, 37, 41, 1);
+}
+button.undo-crud:active {
+  border: 1px solid rgba(28, 52, 84, 1);
+  color: rgba(33, 37, 41, 1);
 }
 
 /* ALERT POPUP */
