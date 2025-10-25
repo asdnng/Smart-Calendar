@@ -1,5 +1,41 @@
+/* TASKLIST TOP BAR */
+.tasklist-options {
+  position: sticky;
+  top: 0px;
+  right: 30px;
+  display: flex;
+  border-bottom: 1.5px solid rgb(117, 128, 137);
+  justify-content: end;
+  align-items: center;
+}
+
+.sort-tasks {
+  display: flex;
+  align-items: center;
+  font-family: monospace;
+  font-size: medium;
+}
+
+.filter-tasks {
+  background-color: rgba(33, 37, 41, 1);
+  color: white;
+}
+
+/* TASKLIST CONTENT */
 .task-item {
-  border: 1px solid black;
-  border-radius: 10px;
-  margin-bottom: 5px;
+  border: none;
+  border-radius: 7px;
+  margin-bottom: 7px;
+}
+
+.task-period {
+  font-size: 15px;
+}
+
+.task-info h4 {
+  font-size: 18px;
+}
+
+.task-info p {
+  font-size: 15px;
 }
