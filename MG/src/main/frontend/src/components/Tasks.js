@@ -8,13 +8,13 @@ const sortTasks = (a, b) => {
 
   const sTimeA = a.startTime || '99:99';
   const sTimeB = b.startTime || '99:99';
-  if (sTimeA < sTimeB) return 1;
-  if (sTimeA > sTimeB) return -1;
+  if (sTimeA < sTimeB) return -1;
+  if (sTimeA > sTimeB) return 1;
 
   const eTimeA = a.endTime || '99:99';
   const eTimeB = b.endTime || '99:99';
-  if (eTimeA < eTimeB) return 1;
-  if (eTimeA > eTimeB) return -1;
+  if (eTimeA < eTimeB) return -1;
+  else if (eTimeA > eTimeB) return 1;
 
   return 0;
 };
