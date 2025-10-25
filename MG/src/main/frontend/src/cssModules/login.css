@@ -17,7 +17,7 @@
   z-index: 1000;
 }
 
-@media (max-width: 768px) { /* Bootstrap's md breakpoint */
+@media (max-width: 768px) {  /* Bootstrap's md breakpoint */
   .project-logo {
     width: 50px;
   }

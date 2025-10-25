@@ -1,6 +1,6 @@
 body, html {
   height: 100%;
-  overflow: hidden; /* prevent body scroll */
+  overflow: hidden;  /* prevent body scroll */
 }
 
 .dashboard-header {
@@ -9,13 +9,14 @@ body, html {
   width: 100%;
   background-color: rgba(28, 52, 84, 1);
   font-family: "Lucida Console", "Courier New", monospace;
+  z-index: 1000;
 }
 
 .content {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-top: 90px;
+  padding-top: 72px;
 }
 
 /* ADD TASK SHORTCUT BUTTON */
