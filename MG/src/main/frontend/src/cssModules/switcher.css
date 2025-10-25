@@ -1,0 +1,83 @@
+.switcher {
+  position: relative;
+  display: inline-block;
+  width: 75px;
+  height: 30px;
+  font-family: monospace;
+  font-size: smaller;
+}
+
+.switcher input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* DEFAULT */
+/* SLIDER (read mode) */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(140, 187, 203, 1);
+  border-radius: 30px;
+  transition: 0.4s;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+/* MODE TEXT (read mode) */
+.slider-text {
+  position: absolute;
+  width: 100%;
+  padding-right: 12px;
+  text-align: right;
+  color: white;
+  pointer-events: none;
+}
+/* KNOB MODE ICON (read mode) */
+.slider-icon {
+  position: absolute;
+  left: 3px;
+  bottom: 3px;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s;
+  font-size: 13px;
+  color: black;
+}
+
+/* SWITCHED */ 
+/* SLIDER (edit mode) */
+input:checked + .slider {
+  background-color: rgba(28, 52, 84, 1);
+}
+/* MODE TEXT (edit mode) */
+input:checked + .slider .slider-text {
+  padding-left: 12px;
+  text-align: left;
+  color: rgba(243, 235, 235, 1);
+  transition: 0.5s;
+}
+/* KNOB MODE ICON (edit mode) */
+input:checked + .slider .slider-icon {
+  transform: translateX(45px);
+  background-color: rgba(243, 235, 235, 1);
+}
+
+/* DISABLED */
+.switcher input:disabled + .slider {
+  background-color: gray;
+  cursor: not-allowed;
+}
+.switcher input:disabled + .slider .slider-icon {
+  color: gray;
+}
