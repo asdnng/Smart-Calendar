@@ -27,15 +27,15 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         //user name, role
-        String username = authentication.getName();
+        String email = authentication.getName();
         String role = authentication.getAuthorities().iterator().next().getAuthority();
 
         //JWT issue
-        String accessToken = JWTUtil.createJWT(username, role, true);
-        String refreshToken = JWTUtil.createJWT(username, role, false);
+        String accessToken = JWTUtil.createJWT(email, role, true);
+        String refreshToken = JWTUtil.createJWT(email, role, false);
 
         //save refresh token
-        jwtService.addRefresh(username, refreshToken);
+        jwtService.addRefresh(email, refreshToken);
 
         //set response header
         response.setContentType("application/json");

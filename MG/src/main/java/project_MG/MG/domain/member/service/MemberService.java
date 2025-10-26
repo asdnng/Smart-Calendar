@@ -49,17 +49,17 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
 
     @Transactional(readOnly = true)
     public Boolean existUser(MemberRequestDTO dto) {
-        return memberRepository.existsByUsername(dto.getUsername());
+        return memberRepository.existsByEmail(dto.getEmail());
     } //check if username exists (before sing-up)
 
     @Transactional
     public Long join(MemberRequestDTO dto) {
-        if(memberRepository.existsByUsername(dto.getUsername())) {
+        if(memberRepository.existsByEmail(dto.getEmail())) {
             throw new IllegalStateException("Already exist member.");
         } // one more check (redundant, but for safety) (just in case of, postman or other tool bypassing front-end check)
 
         Member member = Member.builder()
-                .username(dto.getUsername())
+                .email(dto.getEmail())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .isLock(false)
                 .isSocial(false)
@@ -74,12 +74,12 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
     //sign-in
     @Transactional(readOnly = true) // read from DB
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = memberRepository.findByUsernameAndIsLockAndIsSocial(username, false, false)
-                .orElseThrow(() -> new UsernameNotFoundException(username + " not found."));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Member member = memberRepository.findByEmailAndIsLockAndIsSocial(email, false, false)
+                .orElseThrow(() -> new UsernameNotFoundException(email + " not found."));
 
         return User.builder()
-                .username(member.getUsername())
+                .username(member.getEmail())
                 .password(member.getPassword())
                 .roles(member.getRoleType().toString())
                 .build();
@@ -88,13 +88,13 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
     public Long updateMember(MemberRequestDTO dto) throws AccessDeniedException {
 
         String sessionMembername = SecurityContextHolder.getContext().getAuthentication().getName();
-        if(!sessionMembername.equals(dto.getUsername())) {
+        if(!sessionMembername.equals(dto.getEmail())) {
             throw new AccessDeniedException("You can only update your own information.");
         }
 
         //searching
-        Member member = memberRepository.findByUsernameAndIsLockAndIsSocial(dto.getUsername(), false, false)
-                .orElseThrow(() -> new UsernameNotFoundException(dto.getUsername()));
+        Member member = memberRepository.findByEmailAndIsLockAndIsSocial(dto.getEmail(), false, false)
+                .orElseThrow(() -> new UsernameNotFoundException(dto.getEmail()));
 
         //updating
         member.updateMember(dto);
@@ -112,26 +112,22 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
         Map<String, Object> attributes;
         List<GrantedAuthority> authorities;
 
-        String username;
-        String role = UserRoleType.USER.name();
         String email;
-        String nickname;
+        String role = UserRoleType.USER.name();
 
         //provider (for now, only google)
         String registrationId = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
 
         if (registrationId.equals(SocialProviderType.GOOGLE.name())) {
             attributes = (Map<String, Object>) oAuth2User.getAttributes();
-            username = attributes.get("email").toString();
-            //email =
-            //nickname = attributes.get("name").toString();
+            email = attributes.get("email").toString();
         }
         else {
             throw new OAuth2AuthenticationException("not supporting login.");
         }
 
         // DB check -> save if not exist
-        Optional<Member> entity = memberRepository.findByUsernameAndIsSocial(username, false);
+        Optional<Member> entity = memberRepository.findByEmailAndIsSocial(email, false);
 
         if(entity.isPresent()) {
 
@@ -149,7 +145,7 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
         else {
             // create new user
             Member member = Member.builder()
-                    .username(username)
+                    .email(email)
                     .password("")
                     .isLock(false)
                     .isSocial(true)
@@ -163,7 +159,7 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
         }
         authorities = List.of(new SimpleGrantedAuthority(role));
 
-        return new CustomOAuth2User(attributes, authorities, username);
+        return new CustomOAuth2User(attributes, authorities, email);
     }
 
     // user deletion
@@ -174,30 +170,30 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
         String sessionUsername = context.getAuthentication().getName();
         String sessionRole = context.getAuthentication().getAuthorities().iterator().next().getAuthority();
 
-        boolean isOwner = sessionUsername.equals(dto.getUsername());
+        boolean isOwner = sessionUsername.equals(dto.getEmail());
         boolean isAdmin = sessionRole.equals("ROLE_"+UserRoleType.ADMIN.name());
 
         if (!isOwner && !isAdmin) {
             throw new AccessDeniedException("you cant delete!");
         }
         //user delete
-        memberRepository.deleteByUsername(dto.getUsername());
+        memberRepository.deleteByEmail(dto.getEmail());
         // refresh token delete
-        jwtService.removeRefreshUser(dto.getUsername());
+        jwtService.removeRefreshUser(dto.getEmail());
     }
 
     // user serach
     @Transactional(readOnly = true)
     public MemberResponseDTO readUser() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
         //anonymousUser check
         //~~~~
 
-        Member member = memberRepository.findByUsernameAndIsLock(username, false)
-                .orElseThrow(() -> new UsernameNotFoundException(username + " not found."));
+        Member member = memberRepository.findByEmailAndIsLock(email, false)
+                .orElseThrow(() -> new UsernameNotFoundException(email + " not found."));
 
-        return new MemberResponseDTO(username, member.getIsSocial());
+        return new MemberResponseDTO(email, member.getIsSocial());
     }
 
 }

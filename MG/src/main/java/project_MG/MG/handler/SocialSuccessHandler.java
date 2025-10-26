@@ -27,14 +27,14 @@ public class SocialSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         // username, role
-        String username =  authentication.getName();
+        String email =  authentication.getName();
         String role = authentication.getAuthorities().iterator().next().getAuthority();
 
         // JWT(Refresh) issue
-        String refreshToken = JWTUtil.createJWT(username, role, false);
+        String refreshToken = JWTUtil.createJWT(email, role, false);
 
         // issued Refresh save in DB table  (Refresh whitelist)
-        jwtService.addRefresh(username, refreshToken);
+        jwtService.addRefresh(email, refreshToken);
 
         // response cookie setting
         Cookie refreshCookie = new Cookie("refreshToken", refreshToken);

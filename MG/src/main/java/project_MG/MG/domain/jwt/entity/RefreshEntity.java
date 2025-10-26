@@ -23,8 +23,8 @@ public class RefreshEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", nullable = false)
-    private String username;
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @Column(name = "refresh", nullable = false, length = 512)
     private String refresh;

@@ -53,16 +53,16 @@ public class JwtService {
         }
 
         // info extraction
-        String username = JWTUtil.getUsername(refreshToken);
+        String email = JWTUtil.getEmail(refreshToken);
         String role = JWTUtil.getRole(refreshToken);
 
         // token creation
-        String newAccessToken = JWTUtil.createJWT(username, role, true);
-        String newRefreshToken = JWTUtil.createJWT(username, role, false);
+        String newAccessToken = JWTUtil.createJWT(email, role, true);
+        String newRefreshToken = JWTUtil.createJWT(email, role, false);
 
         // Delete existing Refresh token in DB and add a new one
         RefreshEntity newRefreshEntity = RefreshEntity.builder()
-                .username(username)
+                .email(email)
                 .refresh(newRefreshToken)
                 .build();
 
@@ -99,16 +99,16 @@ public class JwtService {
         }
 
         // info extraction
-        String username = JWTUtil.getUsername(refreshToken);
+        String email = JWTUtil.getEmail(refreshToken);
         String role = JWTUtil.getRole(refreshToken);
 
         // token creation
-        String newAccessToken = JWTUtil.createJWT(username, role, true);
-        String newRefreshToken = JWTUtil.createJWT(username, role, false);
+        String newAccessToken = JWTUtil.createJWT(email, role, true);
+        String newRefreshToken = JWTUtil.createJWT(email, role, false);
 
         // Delete existing Refresh token in DB and add a new one
         RefreshEntity newRefreshEntity = RefreshEntity.builder()
-                .username(username)
+                .email(email)
                 .refresh(newRefreshToken)
                 .build();
 
@@ -120,9 +120,9 @@ public class JwtService {
 
     //JWT refresh token issue and save
     @Transactional
-    public void addRefresh(String username, String refreshToken) {
+    public void addRefresh(String email, String refreshToken) {
         RefreshEntity entity = RefreshEntity.builder()
-                .username(username)
+                .email(email)
                 .refresh(refreshToken)
                 .build();
 
@@ -141,9 +141,9 @@ public class JwtService {
         refreshRepository.deleteByrefresh(refreshToken);
     }
 
-    //JWT delete all tokens by username (for account deletion)
-    public void removeRefreshUser(String username) {
-        refreshRepository.deleteByUsername(username);
+    //JWT delete all tokens by email (for account deletion)
+    public void removeRefreshUser(String email) {
+        refreshRepository.deleteByEmail(email);
     }
 
 }

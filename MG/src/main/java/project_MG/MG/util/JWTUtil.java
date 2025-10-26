@@ -24,7 +24,7 @@ public class JWTUtil {
     }
 
     // JWT username (sub) parsing
-    public static String getUsername(String token) {
+    public static String getEmail(String token) {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("sub", String.class);
     }
 

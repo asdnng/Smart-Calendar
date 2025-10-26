@@ -8,15 +8,15 @@ import java.util.Optional;
 
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    Boolean existsByUsername(String username);
+    Boolean existsByEmail(String email);
 
-    Optional<Member> findByUsernameAndIsLockAndIsSocial(String username, Boolean isLock, Boolean isSocial);
-    Optional<Member> findByUsernameAndIsSocial(String username, Boolean social);
+    Optional<Member> findByEmailAndIsLockAndIsSocial(String email, Boolean isLock, Boolean isSocial);
+    Optional<Member> findByEmailAndIsSocial(String email, Boolean social);
 
-    Optional<Member> findByUsernameAndIsLock(String username, Boolean isLock);
+    Optional<Member> findByEmailAndIsLock(String email, Boolean isLock);
 
     @Transactional
-    void deleteByUsername(String username);
+    void deleteByEmail(String email);
 //    Member save(Member member); // save member
 //    Optional<Member> findById(Long id); // find member
 //    Optional<Member> findByName(String name);

@@ -10,14 +10,14 @@ public class CustomOAuth2User implements OAuth2User {
 
     private final Map<String, Object> attributes;
     private final Collection<? extends GrantedAuthority> authorities;
-    private final String username;
+    private final String email;
 
     public CustomOAuth2User(Map<String, Object> attributes,
                             Collection<? extends GrantedAuthority> authorities,
-                            String username) {
+                            String email) {
         this.attributes = attributes;
         this.authorities = authorities;
-        this.username = username;
+        this.email = email;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class CustomOAuth2User implements OAuth2User {
 
     @Override
     public String getName() {
-        return username;
+        return email;
     }
 
 }

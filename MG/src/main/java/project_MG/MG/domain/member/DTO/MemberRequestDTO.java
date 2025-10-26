@@ -16,12 +16,12 @@ public class MemberRequestDTO {
     public interface updateGroup {}
     public interface deleteGroup {}
 
-    @NotBlank(groups = {existGroup.class, addGroup.class, updateGroup.class, deleteGroup.class}) @Size(min = 4, max = 20)
-    private String username;
+    @Email @NotBlank(groups = {existGroup.class, addGroup.class, updateGroup.class, deleteGroup.class})
+    private String email;
     @NotBlank(groups = {addGroup.class, updateGroup.class}) @Size(min = 4)
     private String password;
 //    @NotBlank(groups = {addGroup.class, updateGroup.class})
 //    private String nickname;
-    @Email(groups = {addGroup.class, updateGroup.class})
-    private String email;
+//    @Email(groups = {addGroup.class, updateGroup.class})
+//    private String email;
 }
