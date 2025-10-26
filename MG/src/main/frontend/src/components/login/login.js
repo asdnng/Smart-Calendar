@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import api from '../../axiosSetup.js';
 import SignIn from './signin.js';
@@ -15,6 +16,7 @@ import '../../cssModules/login.css';
 function LoginPage({ setAuth }) {
   const [isSignIn, setIsSignIn] = useState(true);
   const [gilImage, setGilImage] = useState(gilLookUp);
+  const navigate = useNavigate();
 
   const location = useLocation();
 
@@ -29,6 +31,7 @@ function LoginPage({ setAuth }) {
     localStorage.setItem("token", token);  // store JWT from backend
     console.log(`${method} token stored: `, token);
     setAuth(true);
+    navigate("/dashboard");
 
 //    if (location.search.includes("token=")) {
 //      window.history.replaceState({}, document.title, "/dashboard");
