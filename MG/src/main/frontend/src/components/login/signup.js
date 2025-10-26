@@ -19,7 +19,7 @@ function SignUp({ onSwitch, onSubmit, onGoogle, setGil }) {
 
     if (cPassword !== password) {
       setError("Password does not match");
-      setGil("front");
+      setGil("sus");
     } else {
       const at = email.indexOf('@');
       const name = email.slice(0, at);  // displayed name, later changable, non unique
