@@ -9,7 +9,8 @@ import SignUp from './signup.js';
 import gilLookUp from '../../assets/gil-corner-lookup.png';
 import gilLookRight from '../../assets/gil-corner-lookright.png';
 import gilLookFront from '../../assets/gil-corner-lookfront.png';
-import gilLookDown from '../../assets/gil-corner-lookdown.png';
+import gilLookDown from '../../assets/gil-corner-notlook.png';
+import gilLookSus from '../../assets/gil-corner-looksus.png';
 
 import '../../cssModules/login.css';
 
@@ -24,6 +25,7 @@ function LoginPage({ setAuth }) {
     if (look === "right") { setGilImage(gilLookRight); }
     else if (look === "down") { setGilImage(gilLookDown); }
     else if (look === "front") { setGilImage(gilLookFront); }
+    else if (look === "sus") { setGilImage(gilLookSus); }
     else { setGilImage(gilLookUp); }
   };
 
