@@ -29,6 +29,11 @@ function LoginPage({ setAuth }) {
     else { setGilImage(gilLookUp); }
   };
 
+  const handleSwitchPage = () => {
+    setIsSignIn(!isSignIn);
+    setGilImage(gilLookFront);
+  };
+
   const authSuccess = useCallback((token, method) => {
     localStorage.setItem("token", token);  // store JWT from backend
     console.log(`${method} token stored: `, token);
@@ -104,14 +109,14 @@ function LoginPage({ setAuth }) {
         <div className="col-md-6 d-flex justify-content-center align-items-center">
           {isSignIn ? (
             <SignIn
-              onSwitch={() => setIsSignIn(!isSignIn)}
+              onSwitch={handleSwitchPage}
               onSubmit={handleSubmitForm}
               onGoogle={handleGoogleLogin}
               setGil={handleGil}
             />
           ) : (
             <SignUp
-              onSwitch={() => setIsSignIn(!isSignIn)}
+              onSwitch={handleSwitchPage}
               onSubmit={handleSubmitForm}
               onGoogle={handleGoogleLogin}
               setGil={handleGil}

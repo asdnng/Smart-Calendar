@@ -1,11 +1,24 @@
+import { useEffect, useState } from 'react';
+
+import gilWelcome from '../assets/gil-sit-welcome.png';
+import gilWelcomeGuide from '../assets/gil-sit-welcome-guide.png';
+
 function DashboardHome() {
+  const [gilImage, setGilImage] = useState(gilWelcome);
+
+  useEffect(() => {
+    setTimeout(() => setGilImage(gilWelcomeGuide), 3000);
+  }, [])
+
   return (
     <div className="row flex-grow-1">
-      {/*<div className="col-2 bg-light d-flex justify-content-center align-items-center p-3">Menu</div>*/}
       <div className="col-12 bg-light text-dark d-flex justify-content-center align-items-center p-3">
-        This is welcome dashboard
+        <img
+          src={gilImage}
+          alt="gil"
+          className="gil-welcome"
+        />
       </div>
-      {/*<div className="col-2 bg-light d-flex justify-content-center align-items-center p-3">Side tab</div>*/}
     </div>
   );
 }

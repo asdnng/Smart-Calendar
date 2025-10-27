@@ -43,3 +43,8 @@ body, html {
   background-color: rgba(28, 52, 84, 1);
   color: rgba(243, 235, 235, 1);
 }
+
+/* GIL IMAGE */
+.gil-welcome {
+  width: 200px;
+}
