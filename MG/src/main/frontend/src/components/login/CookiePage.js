@@ -1,44 +1,34 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../../axiosSetup.js";
 
 function CookiePage() {
+  const navigate = useNavigate();
+  const didRun = useRef(false); // guard against StrictMode double-effect
 
-    const navigate = useNavigate();
+  useEffect(() => {
+    if (didRun.current) return;
+    didRun.current = true;
 
-    useEffect(() => {
+    (async () => {
+      try {
+        // small delay helps ensure the Set-Cookie from the redirect is applied
+        await new Promise(r => setTimeout(r, 200));
 
-        const cookieToBody = async () => {
+        const res = await api.post("/jwt/exchange", {}, { withCredentials: true });
+        localStorage.setItem("token", res.data.accessToken);
+        localStorage.setItem("refreshToken", res.data.refreshToken);
 
-            try {
+        navigate("/dashboard", { replace: true });
+      } catch (err) {
+        console.error("Exchange failed:", err);
+        alert("Authentication failed");
+        navigate("/", { replace: true });
+      }
+    })();
+  }, [navigate]);
 
-                const res = await fetch(`localhost:8080/jwt/exchange`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "include",
-                });
-
-                if (!res.ok) throw new Error("auth failure");
-
-                const data = await res.json();
-                localStorage.setItem("accessToken", data.accessToken);
-                localStorage.setItem("refreshToken", data.refreshToken);
-
-                navigate("/dashboard");
-
-            } catch (err) {
-                alert("failure");
-                navigate("/");
-            }
-
-        };
-
-        cookieToBody();
-
-    }, [navigate]);
-
-    return (
-        <p>login...</p>
-    );
+  return <p>Logging you in...</p>;
 }
 
 export default CookiePage;
