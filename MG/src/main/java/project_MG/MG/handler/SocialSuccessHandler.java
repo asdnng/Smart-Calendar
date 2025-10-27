@@ -44,6 +44,13 @@ public class SocialSuccessHandler implements AuthenticationSuccessHandler {
         refreshCookie.setMaxAge(10); // 10 sec
 
         response.addCookie(refreshCookie);
+//        String cookieHeader = String.format(
+//                "refreshToken=%s; Max-Age=%d; Path=/; Secure; HttpOnly; SameSite=None",
+//                refreshToken,
+//                7 * 24 * 60 * 60
+//        );
+//
+//        response.setHeader("Set-Cookie", cookieHeader);
         response.sendRedirect("http://localhost:3000/cookie");
     }
 
