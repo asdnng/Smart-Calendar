@@ -22,6 +22,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LoginPage setAuth={setIsAuthenticated} />} />
+        <Route path="/cookie" element={<CookiePage />} />
+
         <Route
           path="/dashboard"
           element={
