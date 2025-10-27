@@ -13,7 +13,7 @@ npm install
 npm start
 ```
 
-## How authentification work (for mun)
+## How authentification work
 
 ### 1. User Sign Up
 1. **Frontend** → `POST /user` with `email` & `password`  
@@ -23,7 +23,7 @@ npm start
 ---
 
 ### 2. User Login
-1. **Frontend** → `POST /login` with `username (email)` & `password`  
+1. **Frontend** → `POST /login` with `email` & `password`  
 2. **Backend** → Validates credentials  
 3. **Response** → Returns `accessToken` and `refreshToken`  
 4. **Frontend** → Save both tokens securely (e.g., localStorage or cookies)
@@ -45,14 +45,13 @@ npm start
 ---
 
 
-## List of API(reference table for Mun)
-(But currently I didnt modify DTO, and service logic(it still needs 4 varaible for login) so, we cannot login rn but I ll modify soon!)
+## List of API
 
 | Action           | Method | Endpoint       | Need Token? | Send                              | Get           |
 |------------------|---------|----------------|--------------|-----------------------------------|----------------|
 | Sign up          | POST    | /user          | ❌ No         | email, password                   | memberId       |
 | Check email      | POST    | /user/exist    | ❌ No         | email                             | true / false   |
-| Login            | POST    | /login         | ❌ No         | username, password                | tokens         |
+| Login            | POST    | /login         | ❌ No         | email, password                   | tokens         |
 | Get profile      | GET     | /user          | ✅ Yes        | -                                 | user info      |
 | Update profile   | PUT     | /user          | ✅ Yes        | email, password                   | userId         |
 | Delete account   | DELETE  | /user          | ✅ Yes        | email                             | true           |
