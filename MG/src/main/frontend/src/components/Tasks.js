@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from 'react';
-
+import { createContext, useContext, useState, useEffect, useCallback  } from 'react';
+import api from '../axiosSetup.js';
 const TasksContext = createContext();
 
 const sortTasks = (a, b) => {
@@ -22,12 +22,53 @@ const sortTasks = (a, b) => {
 // data currently temporary, later integrate with database (backend) to become permanent
 export const TasksProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const addTask = (task) => setTasks([...tasks, task]);
-  const getTask = (id) => tasks.find(t => t.id === id );
-  const removeTask = (id) => setTasks(tasks.filter(t => t.id !== id));
-  const editTask = (id, updatedData) => {
-    setTasks(tasks.map(t => t.id === id ? { ...t, ...updatedData } : t));
+  const loadTasks = useCallback(async () => {
+    try {
+      const res = await api.get('/tasks');
+      setTasks(res.data || []);
+    } catch (err) {
+      console.error('Failed to load tasks:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadTasks();
+  }, [loadTasks]);
+
+  const addTask = async (task) => {
+    try {
+      const res = await api.post('/tasks', task);
+      setTasks((prev) => [...prev, res.data]);
+    } catch (err) {
+      console.error('Add task failed:', err);
+      alert('Failed to save task. Please try again.');
+    }
+  };
+
+  const getTask = (id) => tasks.find((t) => t.id === id);
+
+  const editTask = async (id, updatedData) => {
+    try {
+      const res = await api.put(`/tasks/${id}`, updatedData);
+      setTasks((prev) => prev.map((t) => (t.id === id ? res.data : t)));
+    } catch (err) {
+      console.error('Update failed:', err);
+      alert('Failed to update task.');
+    }
+  };
+
+  const removeTask = async (id) => {
+    try {
+      await api.delete(`/tasks/${id}`);
+      setTasks((prev) => prev.filter((t) => t.id !== id));
+    } catch (err) {
+      console.error('Delete failed:', err);
+      alert('Failed to delete task.');
+    }
   };
 
   const getReversedTasks = () => tasks.slice().reverse();
