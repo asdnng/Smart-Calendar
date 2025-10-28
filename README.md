@@ -57,6 +57,11 @@ npm start
 | Delete account   | DELETE  | /user          | ✅ Yes        | email                             | true           |
 | Refresh token    | POST    | /jwt/refresh   | ❌ No         | refreshToken(in body)             | new tokens     |
 | Refresh token(social)    | POST    | /jwt/exchange  | ❌ No | refreshToken(cookie)              | new tokens     |
+| Create task      | POST    | /user          | ✅ Yes        | taskName, category, date, startTime, endTime, description               | create new task           |
+| Get my tasks     | GET     | /user          | ✅ Yes        | email                             | true           | List of all tasks
+| Update task      | PUT     | /tasks/{id}    | ✅ Yes        | taskName, category, date, startTime, endTime, description               | Updated task object       |
+| Delete task      | DELETE  | /tasks/{id}    | ✅ Yes        | email                             | true           |
+
 
 ## DB selection -Working
 - Mysql(serving by Docker)
