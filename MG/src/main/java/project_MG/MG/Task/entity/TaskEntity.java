@@ -21,13 +21,13 @@ public class TaskEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String title;
+    private String taskName;
 
+    private String category;
+    private String date;
+    private String startTime;
+    private String endTime;
     private String description;
-
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
