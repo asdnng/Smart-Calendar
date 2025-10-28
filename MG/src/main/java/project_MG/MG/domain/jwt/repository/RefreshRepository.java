@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import project_MG.MG.domain.jwt.entity.RefreshEntity;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public interface RefreshRepository extends JpaRepository<RefreshEntity, Long> {
 
@@ -14,8 +15,11 @@ public interface RefreshRepository extends JpaRepository<RefreshEntity, Long> {
     void deleteByrefresh(String refresh);
 
     @Transactional
-    void deleteByEmail(String username);
+    void deleteByEmail(String email);
 
     @Transactional
     void deleteByCreatedDateBefore(LocalDateTime createdDate);
+
+    Optional<RefreshEntity> findByEmail(String email);
+
 }

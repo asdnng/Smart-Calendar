@@ -15,6 +15,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByEmailAndIsLock(String email, Boolean isLock);
 
+    Optional<Member> findByEmail(String email);
+
     @Transactional
     void deleteByEmail(String email);
 //    Member save(Member member); // save member

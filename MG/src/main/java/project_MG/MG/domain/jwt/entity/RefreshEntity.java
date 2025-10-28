@@ -32,4 +32,8 @@ public class RefreshEntity {
     @CreatedDate
     @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
+
+    public void updateRefresh(String newToken) {
+        this.refresh = newToken;
+    }
 }

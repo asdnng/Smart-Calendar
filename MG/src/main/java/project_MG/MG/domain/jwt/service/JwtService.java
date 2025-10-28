@@ -11,6 +11,8 @@ import project_MG.MG.domain.jwt.entity.RefreshEntity;
 import project_MG.MG.domain.jwt.repository.RefreshRepository;
 import project_MG.MG.util.JWTUtil;
 
+import java.util.Optional;
+
 @Service
 public class JwtService {
 
@@ -60,15 +62,17 @@ public class JwtService {
         String newAccessToken = JWTUtil.createJWT(email, role, true);
         String newRefreshToken = JWTUtil.createJWT(email, role, false);
 
+        saveOrUpdateRefresh(email, newRefreshToken);
+
         // Delete existing Refresh token in DB and add a new one
         RefreshEntity newRefreshEntity = RefreshEntity.builder()
                 .email(email)
                 .refresh(newRefreshToken)
                 .build();
 
-        removeRefresh(refreshToken);
-        refreshRepository.flush();
-        refreshRepository.save(newRefreshEntity);
+//        removeRefresh(refreshToken);
+//        refreshRepository.flush();
+//        refreshRepository.save(newRefreshEntity);
 
         // Delete existing Refresh token cookie
         Cookie refreshCookie = new Cookie("refreshToken", null);
@@ -106,6 +110,9 @@ public class JwtService {
         String newAccessToken = JWTUtil.createJWT(email, role, true);
         String newRefreshToken = JWTUtil.createJWT(email, role, false);
 
+
+        saveOrUpdateRefresh(email, newRefreshToken);
+
         // Delete existing Refresh token in DB and add a new one
         RefreshEntity newRefreshEntity = RefreshEntity.builder()
                 .email(email)
@@ -121,13 +128,30 @@ public class JwtService {
     //JWT refresh token issue and save
     @Transactional
     public void addRefresh(String email, String refreshToken) {
-        RefreshEntity entity = RefreshEntity.builder()
-                .email(email)
-                .refresh(refreshToken)
-                .build();
-
-        refreshRepository.save(entity);
+        saveOrUpdateRefresh(email, refreshToken);
     }
+
+    private void saveOrUpdateRefresh(String email, String refreshToken) {
+        Optional<RefreshEntity> existing = refreshRepository.findByEmail(email);
+        if (existing.isPresent()) {
+            existing.get().updateRefresh(refreshToken);
+            refreshRepository.save(existing.get());
+        } else {
+            refreshRepository.save(RefreshEntity.builder()
+                    .email(email)
+                    .refresh(refreshToken)
+                    .build());
+        }
+    }
+//    public void addRefresh(String email, String refreshToken) {
+//
+//        RefreshEntity entity = RefreshEntity.builder()
+//                .email(email)
+//                .refresh(refreshToken)
+//                .build();
+//
+//        refreshRepository.save(entity);
+//    }
 
     //JWT token exist check
     @Transactional(readOnly = true)
@@ -138,7 +162,7 @@ public class JwtService {
     //JWT refresh token delete
     @Transactional
     public void removeRefresh(String refreshToken) {
-        refreshRepository.deleteByrefresh(refreshToken);
+        refreshRepository.deleteByEmail(refreshToken);
     }
 
     //JWT delete all tokens by email (for account deletion)

@@ -127,7 +127,7 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
         }
 
         // DB check -> save if not exist
-        Optional<Member> entity = memberRepository.findByEmailAndIsSocial(email, false);
+        Optional<Member> entity = memberRepository.findByEmail(email);
 
         if(entity.isPresent()) {
 
