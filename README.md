@@ -55,7 +55,8 @@ npm start
 | Get profile      | GET     | /user          | ✅ Yes        | -                                 | user info      |
 | Update profile   | PUT     | /user          | ✅ Yes        | email, password                   | userId         |
 | Delete account   | DELETE  | /user          | ✅ Yes        | email                             | true           |
-| Refresh token    | POST    | /jwt/refresh   | ❌ No         | refreshToken                      | new tokens     |
+| Refresh token    | POST    | /jwt/refresh   | ❌ No         | refreshToken(in body)             | new tokens     |
+| Refresh token(social)    | POST    | /jwt/exchange  | ❌ No | refreshToken(cookie)              | new tokens     |
 
 ## DB selection -Working
 - Mysql(serving by Docker)
