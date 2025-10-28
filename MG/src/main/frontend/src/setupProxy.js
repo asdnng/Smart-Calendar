@@ -8,6 +8,7 @@ module.exports = function (app) {
   };
 
   // real prefix hehe
+  app.use('/tasks', createProxyMiddleware(common));
   app.use('/login', createProxyMiddleware(common));
   app.use('/user', createProxyMiddleware(common));
   app.use('/jwt', createProxyMiddleware(common)); // /jwt/refresh, /jwt/exchange
