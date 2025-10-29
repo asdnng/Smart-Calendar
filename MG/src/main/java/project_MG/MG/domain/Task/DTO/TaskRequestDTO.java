@@ -1,4 +1,4 @@
-package project_MG.MG.Task.DTO;
+package project_MG.MG.domain.Task.DTO;
 
 import lombok.*;
 

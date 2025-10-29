@@ -1,4 +1,4 @@
-package project_MG.MG.Task.entity;
+package project_MG.MG.domain.Task.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

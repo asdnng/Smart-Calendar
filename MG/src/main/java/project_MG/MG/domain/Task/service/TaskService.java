@@ -1,4 +1,4 @@
-package project_MG.MG.Task.service;
+package project_MG.MG.domain.Task.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
@@ -6,10 +6,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project_MG.MG.Task.DTO.TaskRequestDTO;
-import project_MG.MG.Task.DTO.TaskResponseDTO;
-import project_MG.MG.Task.entity.TaskEntity;
-import project_MG.MG.Task.repository.TaskRepository;
+import project_MG.MG.domain.Task.DTO.TaskRequestDTO;
+import project_MG.MG.domain.Task.DTO.TaskResponseDTO;
+import project_MG.MG.domain.Task.entity.TaskEntity;
+import project_MG.MG.domain.Task.repository.TaskRepository;
 import project_MG.MG.domain.member.entity.Member;
 import project_MG.MG.domain.member.repository.MemberRepository;
 

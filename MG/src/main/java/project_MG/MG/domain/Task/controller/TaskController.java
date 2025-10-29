@@ -1,12 +1,10 @@
-package project_MG.MG.Task.controller;
+package project_MG.MG.domain.Task.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project_MG.MG.Task.DTO.TaskRequestDTO;
-import project_MG.MG.Task.DTO.TaskResponseDTO;
-import project_MG.MG.Task.entity.TaskEntity;
-import project_MG.MG.Task.service.TaskService;
+import project_MG.MG.domain.Task.DTO.TaskRequestDTO;
+import project_MG.MG.domain.Task.DTO.TaskResponseDTO;
+import project_MG.MG.domain.Task.service.TaskService;
 
 import java.util.List;
 
