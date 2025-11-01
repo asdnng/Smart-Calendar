@@ -16,7 +16,7 @@ import MonthView from './components/views/month.js';
 import './App.css';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);  // type false to test prevention of manual navigation
 
   return (
     <Router>
@@ -27,7 +27,7 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            isAuthenticated ? <DashboardPage /> : <Navigate to="/login" replace />
+            isAuthenticated ? <DashboardPage setAuth={setIsAuthenticated} /> : <Navigate to="/" replace />
           }
         >
           <Route index element={<DashboardHome />} />

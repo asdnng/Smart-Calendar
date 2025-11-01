@@ -10,12 +10,18 @@ import CRUD from './crud/crud.js';
 import '../cssModules/dashboard.css';
 import '../cssModules/menu.css';
 
-function DashboardPage() {
+function DashboardPage({ setAuth }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [crudOpen, setCrudOpen] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setAuth(false);
+    navigate("/");
+  };
 
   return (
     <TasksProvider>
@@ -47,6 +53,7 @@ function DashboardPage() {
           onDay={() => navigate("view/day")}
           onWeek={() => navigate("view/week")}
           onMonth={() => navigate("view/month")}
+          onLogout={handleLogout}
         />
 
         {/* PLACEHOLDER WHERE CHILDREN ROUTES APPEAR */}

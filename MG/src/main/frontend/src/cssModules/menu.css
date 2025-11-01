@@ -48,3 +48,13 @@ h5 {
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
 }
+
+.logout {
+  color: rgba(140, 187, 203, 1);
+}
+.logout:hover {
+  color: rgb(220, 53, 69, 1);
+}
+.logout:active {
+  color: rgb(220, 53, 69, 1);
+}
