@@ -43,7 +43,7 @@ function LoginPage({ setAuth }) {
 //    if (location.search.includes("token=")) {
 //      window.history.replaceState({}, document.title, "/dashboard");
 //    }http://localhost:3000/dashboard
-  }, [setAuth]);
+  }, [setAuth, navigate]);
 
   /* SIGNIN/SIGNUP AUTHORIZATION */
   // token from API
@@ -58,10 +58,10 @@ function LoginPage({ setAuth }) {
       handleGil("up");
 
       if (err.response) {
-        alert(`Oh damn, server error ${formData.name ? formData.name : ""} :O`);
+        alert(`Server error ${formData.name ? formData.name : ""}`);
         console.log("Error response: ", err.response.status, err.response.statusText, "\n", err.response.data);
       } else if (err.request) {
-        alert("Probably network error :/");
+        alert("Network error");
         console.log("Requested but no response: ", err.request);
       } else {
         alert("Something went wrong :(")

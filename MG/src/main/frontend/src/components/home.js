@@ -7,7 +7,7 @@ function DashboardHome() {
   const [gilImage, setGilImage] = useState(gilWelcome);
 
   useEffect(() => {
-    setTimeout(() => setGilImage(gilWelcomeGuide), 3000);
+    setTimeout(() => setGilImage(gilWelcomeGuide), 3500);
   }, [])
 
   return (

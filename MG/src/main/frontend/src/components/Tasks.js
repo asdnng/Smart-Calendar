@@ -1,5 +1,8 @@
 import { createContext, useContext, useState, useEffect, useCallback  } from 'react';
+
 import api from '../axiosSetup.js';
+import Loading from './loading.js';
+
 const TasksContext = createContext();
 
 const sortTasks = (a, b) => {
@@ -19,10 +22,9 @@ const sortTasks = (a, b) => {
   return 0;
 };
 
-// data currently temporary, later integrate with database (backend) to become permanent
 export const TasksProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const loadTasks = useCallback(async () => {
     try {
@@ -31,7 +33,7 @@ export const TasksProvider = ({ children }) => {
     } catch (err) {
       console.error('Failed to load tasks:', err);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }, []);
 
@@ -85,6 +87,10 @@ export const TasksProvider = ({ children }) => {
         tasksByDate: getSortedTasks, 
         tasksByRecency: getReversedTasks }}
     >
+      {isLoading && 
+        <Loading />
+      }
+
       {children}
     </TasksContext.Provider>
   );
