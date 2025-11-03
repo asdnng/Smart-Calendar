@@ -37,6 +37,7 @@ function CRUD({ isOpen, onClose, mode, selectedTaskId = null }) {
 
   useEffect(() => {
     setIsEdit(false);
+    setDisabledSwitch(false);
   }, [editTask, removeTask]);
 
   useEffect(() => {
@@ -60,7 +61,14 @@ function CRUD({ isOpen, onClose, mode, selectedTaskId = null }) {
         {/* READ/EDIT MODE TOGGLE (switcher) */}
         {crudMode !== "create" && (
           <div className="crud-switcher">
-            <Switcher switched={isEdit} onSwitched={() => setIsEdit((prev) => !prev)} blocked={disabledSwitch} />
+            <Switcher 
+              switched={isEdit} 
+              onSwitched={() => setIsEdit((prev) => !prev)} 
+              blocked={disabledSwitch}
+              defaultText="Read"
+              text="Edit"
+              hasIcon={true}
+            />
           </div>
         )}
 
