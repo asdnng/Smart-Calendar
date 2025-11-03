@@ -5,7 +5,6 @@
   right: 30px;
   display: flex;
   border-bottom: 1.5px solid rgb(117, 128, 137);
-  justify-content: end;
   align-items: center;
 }
 
@@ -16,9 +15,32 @@
   font-size: medium;
 }
 
-.filter-tasks {
-  background-color: rgba(33, 37, 41, 1);
-  color: white;
+.filter-dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  left: -90px;
+  z-index: 500;
+  font-family: monospace;
+  font-size: smaller !important;
+}
+
+.select-all {
+  font-family: monospace !important;
+  font-size: medium !important;
+}
+
+.delete-tasks {
+  padding-left: 13px !important;
+  padding-right: 13px !important;
+  padding-top: 1px !important;
+  padding-bottom: 4.5px !important;
+  font-size: large !important;
+}
+.delete-tasks:disabled {
+  border: 1px solid black !important;
 }
 
 /* TASKLIST CONTENT */
