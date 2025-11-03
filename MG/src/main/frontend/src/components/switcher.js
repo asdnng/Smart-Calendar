@@ -1,8 +1,8 @@
-import { BsBook, BsPencilSquare } from 'react-icons/bs';
+import { BsBook, BsPencilSquare, BsRecordCircle } from 'react-icons/bs';
 
 import '../cssModules/switcher.css';
 
-function Switcher({ switched, onSwitched, blocked = false }) {
+function Switcher({ switched, onSwitched, blocked = false, defaultText, text, hasIcon }) {
   return (
     <label className="switcher">
       <input 
@@ -11,10 +11,13 @@ function Switcher({ switched, onSwitched, blocked = false }) {
         onChange={onSwitched}
         disabled={blocked}
       />
-      <span className="slider">
-        <span className="slider-text">{switched ? "Edit" : "Read"}</span>
-        <span className="slider-icon">
-          {switched ? <BsPencilSquare /> : <BsBook />}
+      <span className={`slider ${hasIcon ? "colored" : ""}`}>
+        <span className={`slider-text ${hasIcon ? "colored" : ""}`}>{switched ? text : defaultText}</span>
+        <span className={`slider-icon ${hasIcon ? "colored" : ""}`}>
+          {hasIcon 
+            ? <>{switched ? <BsPencilSquare /> : <BsBook />}</>
+            : <><BsRecordCircle /></>
+          }
         </span>
       </span>
     </label>
