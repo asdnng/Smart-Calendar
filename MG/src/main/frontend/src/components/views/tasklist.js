@@ -24,7 +24,11 @@ const changeColorOpacity = (rgbaString, newOpacity) => {
 };
 
 function TaskItem({ task, openTask, deleting, selectTask, deselectTask, selectedTasks }) {
-  const taskCategory = Categories.find((c) => c && c.value === task.category);
+  // Normalize category to lowercase for matching, and provide fallback for undefined categories
+  const normalizedCategory = task.category ? task.category.toLowerCase() : null;
+  const taskCategory = Categories.find((c) => c && c.value === normalizedCategory);
+  const defaultColor = "rgba(130, 130, 130, 1)"; // "other" category color as fallback
+  const categoryColor = taskCategory?.color || defaultColor;
 
   const handleClick = () => {
     const handleSelect = () => {
@@ -51,7 +55,7 @@ function TaskItem({ task, openTask, deleting, selectTask, deselectTask, selected
       {/* TASK INFO */}
       <div 
         className={`task-info ${deleting ? "col-7" : "col-8"} col-md-9 col-lg-10 px-4 py-3 text-start rounded-4`}
-        style= {{ backgroundColor: changeColorOpacity(taskCategory.color, 0.5) }}
+        style= {{ backgroundColor: changeColorOpacity(categoryColor, 0.5) }}
       >
         <h4 className="mb-1 fw-semibold">{task.taskName}</h4>
         <p className="mb-1"><BsTagFill className="me-2"/> {task.category}</p>
