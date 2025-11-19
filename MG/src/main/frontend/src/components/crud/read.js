@@ -14,7 +14,11 @@ function formatDate(dateString) {
 }
 
 function ReadTask({ task, onClose }) {
-  const taskCategory = Categories.find((c) => c.value === task.category);
+  const normalizedCategory = task.category ? task.category.toLowerCase() : null;
+  const taskCategory = Categories.find((c) => c.value === normalizedCategory);
+  const fallbackCategory = Categories.find((c) => c.value === "other") || { label: "Other", color: "rgba(130, 130, 130, 1)" };
+  const categoryColor = taskCategory?.color || fallbackCategory.color;
+  const categoryLabel = taskCategory?.label || fallbackCategory.label;
 
   return ( 
     <>
@@ -36,9 +40,9 @@ function ReadTask({ task, onClose }) {
           <BsBookmarkFill
             className="ms-3 me-3"
             size={20}
-            style={{ color: taskCategory.color }}
+            style={{ color: categoryColor }}
           />
-          {taskCategory.label}
+          {categoryLabel}
         </div>
 
         {/* DATE */}
