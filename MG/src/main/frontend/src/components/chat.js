@@ -4,34 +4,71 @@ import { BsFillSendFill, BsEmojiLaughing } from 'react-icons/bs';
 
 import '../cssModules/chat.css';
 
-const msg1 = "Mwo dowajulkka?";
-const msg2 = "Sikee, ajik ihae mot haesseoyo";
-const msg3 = "Neo munje isseo?";
-// "keep going~~goood good goood you are not ADHD ^^";
+import api from '../axiosSetup';
+import { useTasks } from './Tasks.js';
+
+
 function Chat() {
+  const { loadTasks } = useTasks();
   const [message, setMessage] = useState("");
-  const [chatMsg, setChatMsg] = useState("Annyeong");
+  const [messages, setMessages] = useState([
+    { from: "ai", text: "Annyeong 👋 What can I help you ?" }
+  ]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
+    const trimmed = message.trim();
+    if (!trimmed) return;
 
-    if (chatMsg === msg1) {
-      setChatMsg("Jamkkanman...");
-      setTimeout(() => setChatMsg(msg2), 10000);
-    } else if (chatMsg === msg2) {
-      setChatMsg("Wae?");
-      setTimeout(() => setChatMsg(msg3), 3000);
-    } else if (chatMsg === msg3) {
-      setChatMsg("MWO?? : O");
-      setTimeout(() => setChatMsg("I'm kidding la, you're good ~"), 3000);
-    } else {
-      setChatMsg("Hehe :D");
+    //1. Add user message to chat
+    setMessages(prev => [...prev, { from: "user", text: trimmed }]);
+    setMessage("");
+    setIsLoading(true);
+
+    try {
+      // 2. Call backend AI task endpoint
+      const res = await api.post("/tasks/ai", {
+        prompt: trimmed,
+        maxTasks: 5
+      });
+
+      const tasks = res.data; // assuming it's List<TaskResponseDTO>
+
+      if (Array.isArray(tasks) && tasks.length > 0) {
+        // Refresh the task list to show newly created tasks
+        await loadTasks();
+        
+        // Build a nice reply text listing created tasks
+        const summaryLines = tasks.map(t =>
+          `• ${t.taskName} (${t.date || "no date"}, ${t.startTime || "–"}–${t.endTime || "–"})`
+        );
+        const reply = [
+          `Yosi!,I made ${tasks.length} tasks based on your request 👇`,
+          "",
+          ...summaryLines
+        ].join("\n");
+
+        setMessages(prev => [...prev, { from: "ai", text: reply }]);
+      } else {
+        setMessages(prev => [
+          ...prev,
+          { from: "ai", text: "umm... can you tell me again? 😅" }
+        ]);
+      }
+    } catch (err) {
+      console.error("AI task generation error:", err);
+      setMessages(prev => [
+        ...prev,
+        { from: "ai", text: "ERROR OCCURRED.. 😥 TRY LATER" }
+      ]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    setTimeout(() => setChatMsg(msg1), 3000);
+    // optional: initial bot message already set in state
   }, []);
 
   return (
@@ -39,7 +76,29 @@ function Chat() {
       {/* CHAT MESSAGES AREA */}
       <div className="d-flex flex-grow-1 justify-content-center">
         <div className="chat-area flex-grow-1 overflow-auto p-3 text-light">
-          {chatMsg}
+          {messages.map((m, idx) => (
+            <div
+              key={idx}
+              className={`mb-2 ${m.from === "user" ? "text-end" : "text-start"}`}
+            >
+              <span
+                className={
+                  "d-inline-block p-2 rounded-3 " +
+                  (m.from === "user" ? "bg-primary" : "bg-secondary")
+                }
+                style={{ whiteSpace: "pre-line" }}
+              >
+                {m.text}
+              </span>
+            </div>
+          ))}
+          {isLoading && (
+            <div className="text-start mb-2">
+              <span className="d-inline-block p-2 rounded-3 bg-secondary">
+                Thinking... 💭
+              </span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -48,7 +107,7 @@ function Chat() {
         <form className="d-flex vw-100" onSubmit={handleSubmit}>
           <textarea
             className="form-control"
-            placeholder="Type a message..."
+            placeholder="Ask to GilAI..."
             rows="1"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
@@ -56,10 +115,11 @@ function Chat() {
           <button
             type="submit"
             className="send-btn ms-2"
-            disabled={!message.trim()}
+            disabled={!message.trim() || isLoading}
           >
-            {!message.trim() && <BsEmojiLaughing />}
-            {message.trim() && <BsFillSendFill />}
+            {!message.trim() && !isLoading && <BsEmojiLaughing />}
+            {message.trim() && !isLoading && <BsFillSendFill />}
+            {isLoading && "…"}
           </button>
         </form>
       </div>
