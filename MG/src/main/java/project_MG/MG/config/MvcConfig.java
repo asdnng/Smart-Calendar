@@ -9,13 +9,8 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry corsRegistry) {
-        String allowedOrigins = System.getenv("ALLOWED_ORIGINS");
-        if (allowedOrigins == null || allowedOrigins.isEmpty()) {
-            allowedOrigins = "http://localhost:3000";
-        }
-        
         corsRegistry.addMapping("/**")
-                .allowedOrigins(allowedOrigins.split(","))
+                .allowedOrigins("http://localhost:3000")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowCredentials(true)
                 .allowedHeaders("*")
