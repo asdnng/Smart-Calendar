@@ -113,7 +113,8 @@ export const TasksProvider = ({ children }) => {
         removeTask, 
         tasksByDate: getSortedTasks, 
         tasksByRecency: getReversedTasks,
-        getFilteredTasks }}
+        getFilteredTasks,
+        loadTasks }}
     >
       {isLoading && 
         <Loading />
