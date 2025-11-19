@@ -1,0 +1,19 @@
+[phases.setup]
+nixPkgs = ["nodejs_20", "gradle", "jdk21"]
+
+[phases.install]
+cmds = [
+  "cd MG/src/main/frontend && npm install"
+]
+
+[phases.build]
+cmds = [
+  "cd MG/src/main/frontend && npm run build",
+  "cd ../../..",
+  "./gradlew bootJar -x test",
+  "chmod +x start.sh"
+]
+
+[start]
+cmd = "cd MG && bash start.sh"
+
