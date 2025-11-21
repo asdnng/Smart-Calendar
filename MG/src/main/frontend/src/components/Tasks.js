@@ -116,10 +116,7 @@ export const TasksProvider = ({ children }) => {
         getFilteredTasks,
         loadTasks }}
     >
-      {isLoading && 
-        <Loading />
-      }
-
+      {isLoading && <Loading />}
       {children}
     </TasksContext.Provider>
   );

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-import SelectCategory from '../categories';
+import SelectCategory from '../Categories';
 
 const initialTaskStates = {
   taskName: "",

@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { BsTagFill, BsThreeDots, BsCircle, BsCheckCircleFill } from 'react-icons/bs';
 
 import { useTasks } from '../Tasks.js';
-import { Categories } from '../categories.js';
+import { Categories } from '../Categories.js';
 import CRUD from '../crud/crud.js';
 import DeleteTask from '../crud/delete.js';
 import Sort from './uitilities/sort.js';

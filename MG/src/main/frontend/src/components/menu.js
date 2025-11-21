@@ -2,7 +2,7 @@ import { BsCalendarPlus, BsCardList, BsViewList, BsLayoutThreeColumns, BsCalenda
 
 import '../cssModules/menu.css';
 
-function Menu({ isOpen, onClose, onChat, onAdd, onList, onDay, onWeek, onMonth, onLogout }) {
+function Menu({ isOpen, onClose, onChat, onAdd, onList, onDay, onWeek, onMonth, onSetting, onLogout }) {
   const opt = "d-flex w-100 px-3 py-2 border-0 text-decoration-none align-items-center text-start text-white";
   const logoutOpt = "d-flex w-100 px-3 py-2 border-0 text-decoration-none align-items-center justify-content-center text-center fw-semibold ";
 
@@ -61,12 +61,10 @@ function Menu({ isOpen, onClose, onChat, onAdd, onList, onDay, onWeek, onMonth, 
           </li>
           <hr className="flex-grow-1 m-2 me-4" />
 
-          <li><button className={opt}>Sync</button></li>
-          <li><button className={opt}>Account</button></li>
-          <li><button className={opt}>Setting</button></li>
+          <li><button className={opt} onClick={onSetting}>Setting</button></li>
 
           <li>
-            <button className={`${logoutOpt} logout`} onClick={onLogout}>
+            <button className={`${logoutOpt} logout mt-3`} onClick={onLogout}>
               <BsBoxArrowRight className="me-2" />
               Logout
             </button>

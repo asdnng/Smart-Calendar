@@ -1,6 +1,6 @@
 import { BsXCircleFill, BsBookmarkFill, BsCalendarFill, BsClockFill } from 'react-icons/bs';
 
-import { Categories } from '../categories';
+import { Categories } from '../Categories';
 
 function formatDate(dateString) {
   const [year, month, day] = dateString.split('-').map(Number);

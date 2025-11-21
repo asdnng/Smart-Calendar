@@ -44,6 +44,10 @@
 }
 
 /* TASKLIST CONTENT */
+.tasklist-container::-webkit-scrollbar {
+  width: 0;
+}
+
 .task-item {
   border: none;
   border-radius: 7px;

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import { BsFunnelFill } from 'react-icons/bs';
 
-import { Categories } from '../../categories.js';
+import { Categories } from '../../Categories.js';
 
 function Filter({ dropdown, OnDropdown, category, categoryChange }) {
   const dropdownRef = useRef(null);

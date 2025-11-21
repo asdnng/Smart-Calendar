@@ -1,0 +1,54 @@
+.setting button {
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: none;
+}
+.setting button:active {
+  background-color: rgba(33, 37, 41, 0.1) !important;
+  border-color: none !important;
+}
+.setting button.top:active {
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+}
+.setting button.bottom:active {
+  border-bottom-left-radius: 15px !important;
+  border-bottom-right-radius: 15px !important;
+}
+
+/* ACCOUNT SETTING */
+.account {
+  background-color: rgba(33, 37, 41, 1);
+}
+
+.account span {
+  margin-left: 15px;
+  padding: 5px 15px 5px 15px;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  font-family: monospace;
+  font-weight: normal;
+  font-style: italic;
+  color: rgba(140, 187, 203, 1);
+}
+
+.account-content {
+  border: 1.5px dotted rgba(140, 187, 203, 1);
+}
+
+.account-content input:user-invalid {
+  border: 1px solid red !important;
+}
+.account-content input:user-invalid:focus {
+  outline: 2px solid pink !important;
+}
+
+/* TASK CATEGORIES SETTING */
+.categories {
+  background-color: rgba(33, 37, 41, 1);
+}
+
+.categories-content {
+  border: 1.5px solid rgba(255, 255, 255, 1);
+}

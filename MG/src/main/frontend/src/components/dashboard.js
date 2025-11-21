@@ -10,18 +10,14 @@ import CRUD from './crud/crud.js';
 import '../cssModules/dashboard.css';
 import '../cssModules/menu.css';
 
-function DashboardPage({ setAuth }) {
+function DashboardPage({ onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [crudOpen, setCrudOpen] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setAuth(false);
-    navigate("/");
-  };
+  const isSettingPath = /^\/dashboard\/setting/.test(location.pathname);
 
   return (
     <TasksProvider>
@@ -53,14 +49,15 @@ function DashboardPage({ setAuth }) {
           onDay={() => navigate("view/day")}
           onWeek={() => navigate("view/week")}
           onMonth={() => navigate("view/month")}
-          onLogout={handleLogout}
+          onSetting={() => navigate("setting")}
+          onLogout={onLogout}
         />
 
         {/* PLACEHOLDER WHERE CHILDREN ROUTES APPEAR */}
         <Outlet />
 
         {/* ADD TASK SHORTCUT BUTTON */}
-        {location.pathname !== "/dashboard/chat" &&
+        {location.pathname !== "/dashboard/chat" && !isSettingPath &&
           <button onClick={() => setCrudOpen(true)} className="add-task-btn mb-4 me-4">
             <BsPatchPlusFill />
           </button>

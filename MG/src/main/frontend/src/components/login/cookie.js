@@ -1,10 +1,11 @@
-import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import api from "../../axiosSetup.js";
+import { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import api from '../../axiosSetup.js';
 
 function CookiePage() {
   const navigate = useNavigate();
-  const didRun = useRef(false); // guard against StrictMode double-effect
+  const didRun = useRef(false);  // guard against StrictMode double-effect
 
   useEffect(() => {
     if (didRun.current) return;
