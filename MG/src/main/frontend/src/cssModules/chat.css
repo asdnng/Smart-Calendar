@@ -2,29 +2,65 @@
   background-color: rgba(28, 52, 84, 1);
 }
 
-.chat .chat-area {
+.chat-area {
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start;
   max-width: 800px;
-  margin-top: 80px;
+}
+.chat-area::-webkit-scrollbar {
+  width: 0;
 }
 
-.chat .input-area {
- background-color: rgba(140, 187, 203, 1);
+.ai-msg, .user-msg {
+  display: inline-block;
+  max-width: 100%;
+  word-wrap: break-word;
 }
 
-.chat form {
+.user-msg {
+  background-color: rgba(140, 187, 203, 0.5);
+  border-radius: 20px 0 20px 20px;
+  max-width: 80%;
+  align-self: flex-end;
+}
+
+@keyframes dot-animation {
+  0% { content: ''; }
+  25% { content: '. '; }
+  50% { content: '. .'; }
+  75%, 100% { content: '. . .'; }
+}
+
+.loading-msg::after {
+    content: ''; 
+    margin-left: 5px; 
+    animation: dot-animation 1s infinite steps(1); 
+    min-width: 20px; 
+}
+
+/* USER TEXT AREA */
+.user-area {
+  background-color: rgba(140, 187, 203, 1);
+}
+
+.user-area form {
   background-color: transparent;
   max-width: 800px;
 }
 
-.chat .form-control {
+.user-area .form-control {
   resize: none;
   overflow-y: auto;
   white-space: pre-wrap;
   line-height: 1.5;
 }
-.chat .form-control:focus {
+.user-area .form-control:focus {
   border: 1px solid rgba(28, 52, 84, 1);
   box-shadow: none;
+}
+.user-area .form-control::-webkit-scrollbar {
+  width: 0;
 }
 
 .send-btn {

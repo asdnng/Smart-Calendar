@@ -1,125 +1,149 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { BsFillSendFill, BsEmojiLaughing } from 'react-icons/bs';
 
-import '../cssModules/chat.css';
-
-import api from '../axiosSetup';
 import { useTasks } from './Tasks.js';
+import api from '../axiosSetup';
 
+import '../cssModules/chat.css';
 
 function Chat() {
   const { loadTasks } = useTasks();
+  const [enableSubmit, setEnableSubmit] = useState(false);
+  const [isGeneratingMsg, setIsGeneratingMsg] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([
-    { from: "ai", text: "Annyeong 👋 What can I help you ?" }
+    { from: "ai", text: "Annyeong 👋 You can now press enter to send your messages!" }
   ]);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const trimmed = message.trim();
-    if (!trimmed) return;
+  const bottomMsgRef = useRef(null);
 
-    //1. Add user message to chat
-    setMessages(prev => [...prev, { from: "user", text: trimmed }]);
-    setMessage("");
-    setIsLoading(true);
+  const scrollToBottom = () => {
+    if (bottomMsgRef.current) bottomMsgRef.current.scrollTop = bottomMsgRef.current.scrollHeight;
+  };
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const generateResponse = async (userMsg) => {
     try {
-      // 2. Call backend AI task endpoint
+      setIsGeneratingMsg(true);
       const res = await api.post("/tasks/ai", {
-        prompt: trimmed,
+        prompt: userMsg,
         maxTasks: 5
       });
 
-      const tasks = res.data; // assuming it's List<TaskResponseDTO>
+      const tasks = res.data;  // ~> List<TaskResponseDTO>
 
       if (Array.isArray(tasks) && tasks.length > 0) {
-        // Refresh the task list to show newly created tasks
         await loadTasks();
         
-        // Build a nice reply text listing created tasks
         const summaryLines = tasks.map(t =>
-          `• ${t.taskName} (${t.date || "no date"}, ${t.startTime || "–"}–${t.endTime || "–"})`
+          `• ${t.taskName} (${t.date || "no date"}, ${t.startTime || "--:--"} ${`til ${t.endTime}` || ""})`
         );
         const reply = [
-          `Yosi!,I made ${tasks.length} tasks based on your request 👇`,
+          `Yosi! I made ${tasks.length} tasks based on your request 👇`,
           "",
           ...summaryLines
         ].join("\n");
 
-        setMessages(prev => [...prev, { from: "ai", text: reply }]);
+        setMessages(prev => [
+          ...prev, { from: "ai", text: reply }
+        ]);
       } else {
         setMessages(prev => [
           ...prev,
-          { from: "ai", text: "umm... can you tell me again? 😅" }
+          { from: "ai", text: "umm... can you come again? 😅" }
         ]);
       }
     } catch (err) {
       console.error("AI task generation error:", err);
       setMessages(prev => [
         ...prev,
-        { from: "ai", text: "ERROR OCCURRED.. 😥 TRY LATER" }
+        { from: "ai", text: "ERROR OCCURRED.. 😥 TRY AGAIN LATER" }
       ]);
     } finally {
-      setIsLoading(false);
+      setIsGeneratingMsg(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    if (!enableSubmit) return;
+
+    const userMsg = message.trim();
+    setMessages(prevMsgs => [
+      ...prevMsgs,
+      { from: "user", text: userMsg }
+    ]);
+    
+    setMessage("");
+    generateResponse(userMsg);
+  };
+
+  const handleEnterKey = (e) => {
+    if ((e.key === 'Enter' || e.keyCode === 13) && !e.shiftKey) {
+      e.preventDefault();
+      if (message.trim()) handleSubmit();
     }
   };
 
   useEffect(() => {
-    // optional: initial bot message already set in state
+    setTimeout(() => {
+      setMessages([
+        { from: "ai", text: "How can I help you today?" }
+      ]);
+      setEnableSubmit(true);
+    }, 3500);
   }, []);
 
   return (
     <div className="chat d-flex flex-column vh-100 border-top">
       {/* CHAT MESSAGES AREA */}
-      <div className="d-flex flex-grow-1 justify-content-center">
-        <div className="chat-area flex-grow-1 overflow-auto p-3 text-light">
-          {messages.map((m, idx) => (
-            <div
+      <div className="content d-flex justify-content-center">
+        <div 
+          className="chat-area flex-grow-1 overflow-auto p-3 pb-4 text-light"
+          ref={bottomMsgRef}
+        >
+          {messages.map((msg, idx) => (
+            <div 
               key={idx}
-              className={`mb-2 ${m.from === "user" ? "text-end" : "text-start"}`}
+              className={msg.from === 'ai' ? 
+                "ai-msg px-3 py-2" : "user-msg my-4 px-3 py-2"
+              }
+              style={{ whiteSpace: "pre-line" }}
             >
-              <span
-                className={
-                  "d-inline-block p-2 rounded-3 " +
-                  (m.from === "user" ? "bg-primary" : "bg-secondary")
-                }
-                style={{ whiteSpace: "pre-line" }}
-              >
-                {m.text}
-              </span>
+              {msg.text}
             </div>
           ))}
-          {isLoading && (
-            <div className="text-start mb-2">
-              <span className="d-inline-block p-2 rounded-3 bg-secondary">
-                Thinking... 💭
-              </span>
+          {isGeneratingMsg && (
+            <div className="loading-msg px-3 py-2 text-secondary fw-semibold">
+              💭 Thinking 
             </div>
           )}
         </div>
       </div>
 
-      {/* INPUT AREA */}
-      <div className="input-area d-flex justify-content-center m-0 px-5 py-3">
+      {/* USER TEXT AREA */}
+      <div className="user-area d-flex justify-content-center m-0 px-4 py-3">
         <form className="d-flex vw-100" onSubmit={handleSubmit}>
           <textarea
-            className="form-control"
-            placeholder="Ask to GilAI..."
+            className="form-control py-2 px-4 border-light rounded-pill"
+            placeholder={isGeneratingMsg ? "Please wait for Gil" : "Type a message to AI Gil..."}
             rows="1"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleEnterKey}
+            disabled={!enableSubmit || isGeneratingMsg}
           />
           <button
             type="submit"
-            className="send-btn ms-2"
-            disabled={!message.trim() || isLoading}
+            className="send-btn ms-3"
+            disabled={!message.trim()}
           >
-            {!message.trim() && !isLoading && <BsEmojiLaughing />}
-            {message.trim() && !isLoading && <BsFillSendFill />}
-            {isLoading && "…"}
+            {!message.trim() && <BsEmojiLaughing />}
+            {message.trim() && <BsFillSendFill />}
           </button>
         </form>
       </div>
