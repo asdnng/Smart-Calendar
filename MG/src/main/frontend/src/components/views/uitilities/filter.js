@@ -18,7 +18,7 @@ function Filter({ dropdown, OnDropdown, category, categoryChange }) {
   return (
     <div className="filter-dropdown" ref={dropdownRef}>
       <button 
-        className={`filter-tasks btn d-flex ms-2 ${category.length === 0 ? "bg-white text-black" : "bg-black text-white"} rounded-3 fs-5`}
+        className={`filter-tasks btn d-flex ms-1 ${category.length === 0 ? "bg-white text-black" : "bg-black text-white"} rounded-3 fs-5`}
         onClick={OnDropdown}
       >
         <BsFunnelFill />

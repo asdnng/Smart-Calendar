@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Navigate, useNavigate, BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+import { setGlobalNavigator } from './navigateService.js';
 import LoginPage from './components/login/login.js';
 import CookiePage from './components/login/cookie.js';
 import DashboardPage from './components/dashboard.js';
@@ -18,9 +19,14 @@ import TaskCategories from './components/settings/categories.js';
 
 import './App.css';
 
+function NavigatorInitializer() {
+  const navigate = useNavigate();
+  setGlobalNavigator(navigate); 
+  return null;
+}
+
 function NavigateBackWrapper({ Component, ...props }) {
   const navigate = useNavigate();
-
   return (
     <Component 
       onBack={() => navigate(-1)}
@@ -40,6 +46,7 @@ function App() {
 
   return (
     <Router>
+      <NavigatorInitializer />
       <Routes>
         <Route path="/" element={<LoginPage setAuth={setIsAuthenticated} />} />
         <Route path="/cookie" element={<CookiePage />} />

@@ -127,7 +127,7 @@ function TaskList() {
       <div className="tasklist-content row w-100 mt-0 px-3 justify-content-center text-center">
         {/* TASKLIST TOP BAR */}
         {hasTasks &&
-          <div className="tasklist-options d-flex col mb-2 pe-2 pt-3 pb-2 bg-secondary">
+          <div className="tasklist-options d-flex col mb-2 pe-1 ps-1 pt-3 pb-2 bg-secondary">
             {/* DELETE MODE SWITCHER */}
             <div className="d-flex col-6 justify-content-start">
               <Switcher 

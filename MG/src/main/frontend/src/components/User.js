@@ -14,7 +14,6 @@ export const UserProvider = ({ children }) => {
   const checkUserExist = async (email) => {
     try {
       const res = await api.post("/user/exist", email);
-      console.log("check: ", res);
       return res;
     } catch (err) {
       console.error("Failed to check user: ", err);
@@ -22,13 +21,22 @@ export const UserProvider = ({ children }) => {
   };
 
   const loadUser = useCallback(async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.log("No token found, skipping user load.");
+      return; 
+    }
+
+    setIsLoading(true);
+
     try {
       const res = await api.get('/user');
-      console.log("response: ", res.data);
       setUserEmail(res.data.email || "");
       setUserPassword(res.data.password || "");
     } catch (err) {
       console.error("Failed to load user info: ", err);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 

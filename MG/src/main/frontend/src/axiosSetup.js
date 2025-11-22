@@ -1,6 +1,5 @@
-import { useNavigate } from 'react-router-dom';
-
 import axios from 'axios';
+import { navigateTo } from './navigateService';
 
 /* REUSABLE AXIOS (BASE) INSTANCE */
 const api = axios.create({
@@ -30,7 +29,7 @@ api.interceptors.response.use(
       console.warn("Token expired or invalid, logging user out...")
       console.log("Removing token: ", localStorage.getItem("token") || "none");
       localStorage.removeItem("token");
-      useNavigate("/"); // redirect to login page
+      navigateTo("/");  // redirect to login page
     }
     return Promise.reject(err);
   }
