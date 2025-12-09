@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import project_MG.MG.domain.member.DTO.MemberRequestDTO;
 
 import java.time.LocalDateTime;
 
@@ -24,7 +23,7 @@ public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email", unique = true, nullable = false, updatable = false)
+    @Column(name = "email", unique = true, nullable = false, updatable = true)
     private String email;
 
     @Column(name = "password", nullable = false)
@@ -59,8 +58,12 @@ public class Member {
     private LocalDateTime updatedDate;
 
 
-    public void updateMember(MemberRequestDTO dto) {
-        this.email = dto.getEmail();
+    public void updateEmail(String email) {
+        this.email = email;
         //this.nickname = dto.getNickname();
+    }
+
+    public void updatePassword(String encodedPassword) {
+        this.password = encodedPassword;
     }
 }
