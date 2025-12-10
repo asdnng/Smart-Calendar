@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { BsPencilSquare, BsArrowRepeat, BsChevronLeft, BsCheckCircleFill, BsTrashFill } from 'react-icons/bs';
 
@@ -9,33 +9,61 @@ function Account({ onBack, onLogout }) {
   const { userEmail, userPassword, googleAccount, updateUser, deleteUser, checkUserExist } = useUser();
   const [isEdit, setIsEdit] = useState(false);
   const [newEmail, setNewEmail] = useState(userEmail);
-  const [newPassword, setNewPassword] = useState(userPassword);
-  const [newCPassword, setNewCPassword] = useState(userPassword);
+  const [newPassword, setNewPassword] = useState("");
+  const [newCPassword, setNewCPassword] = useState("");
   const [pwdError, setPwdError] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [deletePassword, setDeletePassword] = useState("");
+  const [deletePwdError, setDeletePwdError] = useState("");
   // const [newGoogle, setNewGoogle] = useState(googleAccount);
   const [showConfirm, setShowConfirm] = useState(false);
+
+  // keep form in sync with latest loaded user
+  useEffect(() => {
+    setNewEmail(userEmail);
+  }, [userEmail]);
   
-  const handleDeleteUser = () => {
-    deleteUser();
-    setShowConfirm(false);
-    onLogout();
+  const handleDeleteUser = async () => {
+    if (!deletePassword || deletePassword.length < 4) {
+      setDeletePwdError("Password must be at least 4 characters to delete");
+      return;
+    }
+    const res = await deleteUser(deletePassword);
+    if (res.ok) {
+      setShowConfirm(false);
+      setDeletePassword("");
+      onLogout();
+    } else {
+      setDeletePwdError(res.message || "Delete failed");
+    }
   };
 
   /* EDIT/SUBMIT BUTTON EVENT */
-  const handleButtonClick = (e) => {
+  const handleButtonClick = async (e) => {
     e.preventDefault();
-
-    if (isEdit && e.nativeEvent.submitter.type === "submit") {
+  
+    if (isEdit && e.nativeEvent.submitter?.type === "submit") {
       if (newCPassword !== newPassword) {
         setPwdError("Password does not match");
         return;
-      } else if (checkUserExist(newEmail)) {
-        setEmailError(`This email already exists ${checkUserExist(newEmail)}`);
+      }
+      if (newPassword && newPassword.length < 4) {
+        setPwdError("Password must be at least 4 characters");
         return;
-      } else updateUser({ email: newEmail, password: newPassword });
+      }
+      const changedEmail = newEmail !== userEmail;
+      if (changedEmail) {
+        const exists = await checkUserExist(newEmail);
+        if (exists) {
+          setEmailError("This email already exists");
+          return;
+        }
+      }
+      await updateUser({ email: newEmail, password: newPassword || undefined });
+      setNewPassword("");
+      setNewCPassword("");
     }
-
+  
     setIsEdit((prev) => !prev);
   };
 
@@ -97,7 +125,7 @@ function Account({ onBack, onLogout }) {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   onFocus={() => setPwdError("")}
-                  required={newEmail || newCPassword}
+                  // optional; no required to avoid forcing input
                 />
                 Confirm password:
                 <input 
@@ -107,12 +135,12 @@ function Account({ onBack, onLogout }) {
                   value={newCPassword}
                   onChange={(e) => setNewCPassword(e.target.value)}
                   onFocus={() => setPwdError("")}
-                  required={newEmail || newCPassword}
+                  // optional
                 />
 
                 {pwdError && <p className="mt-2 text-danger fw-normal">{pwdError}</p>}
               </>
-              : <span className={`${newPassword ? "" : "text-secondary"}`}>{newPassword ? newPassword : "unknown"}</span>
+              : <span className={`${newPassword ? "" : "text-secondary"}`}>{newPassword ? "********" : "unknown"}</span>
             }
           </p>
           
@@ -130,9 +158,21 @@ function Account({ onBack, onLogout }) {
       {/* ALERT POPUP */}
       <Alert
         isOpen={showConfirm}
-        message={`Delete the account? \n This cannot be recovered.`}
+        message={
+          <div>
+            <div className="mb-2">Delete the account? This cannot be recovered.</div>
+            <input
+              type="password"
+              className="form-control mt-2"
+              placeholder="Current password"
+              value={deletePassword}
+              onChange={(e) => { setDeletePassword(e.target.value); setDeletePwdError(""); }}
+            />
+            {deletePwdError && <div className="text-danger mt-2">{deletePwdError}</div>}
+          </div>
+        }
         onConfirm={handleDeleteUser}
-        onCancel={() => setShowConfirm(false)}
+        onCancel={() => { setShowConfirm(false); setDeletePassword(""); setDeletePwdError(""); }}
       />
     </>
   );
