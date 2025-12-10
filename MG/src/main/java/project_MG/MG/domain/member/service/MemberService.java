@@ -1,5 +1,11 @@
 package project_MG.MG.domain.member.service;
 
+import java.nio.file.AccessDeniedException;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -15,20 +21,18 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import project_MG.MG.domain.jwt.dto.JWTResponseDTO;
 import project_MG.MG.domain.jwt.service.JwtService;
 import project_MG.MG.domain.member.DTO.CustomOAuth2User;
 import project_MG.MG.domain.member.DTO.MemberRequestDTO;
-import project_MG.MG.domain.member.DTO.MemberResponseDTO;
 import project_MG.MG.domain.member.DTO.MemberResponseDTO;
 import project_MG.MG.domain.member.entity.Member;
 import project_MG.MG.domain.member.entity.SocialProviderType;
 import project_MG.MG.domain.member.entity.UserRoleType;
 import project_MG.MG.domain.member.repository.MemberRepository;
-
-import java.nio.file.AccessDeniedException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import project_MG.MG.util.JWTUtil;
 
 @Service
 public class MemberService extends DefaultOAuth2UserService implements UserDetailsService {
@@ -85,21 +89,43 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
                 .build();
     }
     @Transactional
-    public Long updateMember(MemberRequestDTO dto) throws AccessDeniedException {
+    public JWTResponseDTO updateMember(MemberRequestDTO dto) throws AccessDeniedException {
 
-        String sessionMembername = SecurityContextHolder.getContext().getAuthentication().getName();
-        if(!sessionMembername.equals(dto.getEmail())) {
-            throw new AccessDeniedException("You can only update your own information.");
+        String sessionEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Member member = memberRepository.findByEmailAndIsLockAndIsSocial(sessionEmail, false, false)
+                .orElseThrow(() -> new UsernameNotFoundException(sessionEmail));
+
+        boolean emailChanged = false;
+        // email change request -> duplicate check -> change!
+        if (dto.getEmail() != null && !dto.getEmail().equals(sessionEmail)) {
+            if (memberRepository.existsByEmail(dto.getEmail())) {
+                throw new IllegalStateException("Already exist member.");
+            }
+            member.updateEmail(dto.getEmail());
+            emailChanged = true;
         }
 
-        //searching
-        Member member = memberRepository.findByEmailAndIsLockAndIsSocial(dto.getEmail(), false, false)
-                .orElseThrow(() -> new UsernameNotFoundException(dto.getEmail()));
+        // password change
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            member.updatePassword(passwordEncoder.encode(dto.getPassword()));
+        }
 
-        //updating
-        member.updateMember(dto);
+        memberRepository.save(member);
 
-        return memberRepository.save(member).getId();
+        // after change email, remove previous refresh token
+        if (emailChanged) {
+            jwtService.removeRefreshUser(sessionEmail);
+        }
+
+        // renew token
+        String role = "ROLE_" + member.getRoleType().name();
+        String currentEmail = member.getEmail();
+        String newAccessToken = JWTUtil.createJWT(currentEmail, role, true);
+        String newRefreshToken = JWTUtil.createJWT(currentEmail, role, false);
+        jwtService.addRefresh(currentEmail, newRefreshToken);
+
+        return new JWTResponseDTO(newAccessToken, newRefreshToken);
     }// update user info (not social id)
 
     //social sign-in(google)
@@ -133,14 +159,7 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
 
             //role check
             role = entity.get().getRoleType().name();
-
-            // update existing user
-            MemberRequestDTO dto = new MemberRequestDTO();
-            //dto.setNickname(nickname);
-            //dto.setEmail(email);
-            entity.get().updateMember(dto);
-
-            memberRepository.save(entity.get());
+            // existing user - keep as is
         }
         else {
             // create new user
@@ -157,7 +176,7 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
 
             memberRepository.save(member);
         }
-        authorities = List.of(new SimpleGrantedAuthority(role));
+        authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
 
         return new CustomOAuth2User(attributes, authorities, email);
     }
@@ -169,12 +188,23 @@ public class MemberService extends DefaultOAuth2UserService implements UserDetai
         SecurityContext context = SecurityContextHolder.getContext();
         String sessionUsername = context.getAuthentication().getName();
         String sessionRole = context.getAuthentication().getAuthorities().iterator().next().getAuthority();
+        Member member = memberRepository.findByEmailAndIsLock(dto.getEmail(), false)
+                .orElseThrow(() -> new UsernameNotFoundException(dto.getEmail()));
 
         boolean isOwner = sessionUsername.equals(dto.getEmail());
         boolean isAdmin = sessionRole.equals("ROLE_"+UserRoleType.ADMIN.name());
 
         if (!isOwner && !isAdmin) {
             throw new AccessDeniedException("you cant delete!");
+        }
+
+        // verify current password for owner (skip for admin forced delete)
+        if (isOwner && dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            if (!passwordEncoder.matches(dto.getPassword(), member.getPassword())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "password mismatch");
+            }
+        } else if (isOwner && (dto.getPassword() == null || dto.getPassword().isBlank())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "password required to delete account");
         }
         //user delete
         memberRepository.deleteByEmail(dto.getEmail());
