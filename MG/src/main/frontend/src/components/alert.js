@@ -4,7 +4,9 @@ function Alert({ isOpen, message, onConfirm, onCancel }) {
   return (
     <div className="alert-overlay">
       <div className="alert-popup">
-        <p style={{ whiteSpace: 'pre-wrap' }}>{message}</p>
+        <div style={{ whiteSpace: 'pre-wrap' }}>
+          {typeof message === "string" ? <p>{message}</p> : message}
+        </div>
         <div className="d-flex justify-content-end mt-3">
           <button
             className="btn btn-secondary me-2"
