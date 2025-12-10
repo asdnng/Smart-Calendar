@@ -13,10 +13,11 @@ export const UserProvider = ({ children }) => {
 
   const checkUserExist = async (email) => {
     try {
-      const res = await api.post("/user/exist", email);
-      return res;
+      const res = await api.post("/user/exist", { email }); // JSON body!!!
+      return res.data === true;
     } catch (err) {
       console.error("Failed to check user: ", err);
+      return false;
     }
   };
 
@@ -32,7 +33,7 @@ export const UserProvider = ({ children }) => {
     try {
       const res = await api.get('/user');
       setUserEmail(res.data.email || "");
-      setUserPassword(res.data.password || "");
+      setUserPassword(""); // do not keep password in frontend
     } catch (err) {
       console.error("Failed to load user info: ", err);
     } finally {
@@ -48,8 +49,15 @@ export const UserProvider = ({ children }) => {
     try {
       setIsLoading(true);
       const res = await api.put('/user', updatedInfo);
-      setUserEmail(updatedInfo.email);
-      setUserPassword(updatedInfo.password);
+      // store newly issued tokens
+      if (res.data?.accessToken) {
+        localStorage.setItem("token", res.data.accessToken);
+      }
+      if (res.data?.refreshToken) {
+        localStorage.setItem("refreshToken", res.data.refreshToken);
+      }
+      setUserEmail(updatedInfo.email ?? userEmail);
+      setUserPassword("");
     } catch (err) {
       console.error("Update user failed: ", err);
       alert("Failed to update user.");
@@ -58,16 +66,18 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const deleteUser = async () => {
+  const deleteUser = async (password) => {
     try {
       setIsLoading(true);
-      await api.delete("/user", userEmail);
+      await api.delete("/user", { data: { email: userEmail, password } });
       setUserEmail("");
       setUserPassword("");
       setGoogleAccount("");
+      return { ok: true };
     } catch (err) {
       console.error("Delete user failed: ", err);
-      alert("Failed to delete user.");
+      const message = err.response?.data?.message || "Failed to delete user.";
+      return { ok: false, message };
     } finally {
       setIsLoading(false);
     }
