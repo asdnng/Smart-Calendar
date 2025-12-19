@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 
-import { BsPencilSquare, BsArrowRepeat, BsChevronLeft, BsCheckCircleFill, BsTrashFill } from 'react-icons/bs';
+import { BsPencilSquare, BsArrowRepeat, BsChevronLeft, BsCheckCircleFill, BsTrashFill, BsCaretRightFill } from 'react-icons/bs';
 
 import { useUser } from '../User';
 import Alert from '../alert';
 
 function Account({ onBack, onLogout }) {
-  const { userEmail, userPassword, googleAccount, updateUser, deleteUser, checkUserExist } = useUser();
+  const { userEmail, googleAccount, updateUser, deleteUser, checkUserExist } = useUser();
   const [isEdit, setIsEdit] = useState(false);
+  const [isEditPwd, setIsEditPwd] = useState(false);
   const [newEmail, setNewEmail] = useState(userEmail);
   const [newPassword, setNewPassword] = useState("");
   const [newCPassword, setNewCPassword] = useState("");
@@ -18,7 +19,6 @@ function Account({ onBack, onLogout }) {
   // const [newGoogle, setNewGoogle] = useState(googleAccount);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // keep form in sync with latest loaded user
   useEffect(() => {
     setNewEmail(userEmail);
   }, [userEmail]);
@@ -28,14 +28,13 @@ function Account({ onBack, onLogout }) {
       setDeletePwdError("Password must be at least 4 characters to delete");
       return;
     }
+
     const res = await deleteUser(deletePassword);
     if (res.ok) {
       setShowConfirm(false);
       setDeletePassword("");
       onLogout();
-    } else {
-      setDeletePwdError(res.message || "Delete failed");
-    }
+    } else setDeletePwdError(res.message || "Delete failed");
   };
 
   /* EDIT/SUBMIT BUTTON EVENT */
@@ -51,8 +50,8 @@ function Account({ onBack, onLogout }) {
         setPwdError("Password must be at least 4 characters");
         return;
       }
-      const changedEmail = newEmail !== userEmail;
-      if (changedEmail) {
+      
+      if (newEmail !== userEmail) {
         const exists = await checkUserExist(newEmail);
         if (exists) {
           setEmailError("This email already exists");
@@ -65,6 +64,7 @@ function Account({ onBack, onLogout }) {
     }
   
     setIsEdit((prev) => !prev);
+    setIsEditPwd(false);
   };
 
   const handleGoogleChange = () => {  // need recheck 
@@ -115,32 +115,46 @@ function Account({ onBack, onLogout }) {
           </p>
           
           {/* USER PASSWORD */}
-          <p className="fw-semibold">Password: 
+          <p className="fw-semibold">
             {isEdit ?
               <>
-                <input 
-                  type="password"
-                  className={`form-control my-1 ${pwdError ? "border-danger" : ""}`}
-                  placeholder="New password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  onFocus={() => setPwdError("")}
-                  // optional; no required to avoid forcing input
-                />
-                Confirm password:
-                <input 
-                  type="password"
-                  className={`form-control my-1 ${pwdError ? "border-danger" : ""}`}
-                  placeholder="Confirm new password"
-                  value={newCPassword}
-                  onChange={(e) => setNewCPassword(e.target.value)}
-                  onFocus={() => setPwdError("")}
-                  // optional
-                />
-
-                {pwdError && <p className="mt-2 text-danger fw-normal">{pwdError}</p>}
+                {isEditPwd ? 
+                  <>
+                    Password:
+                    <input 
+                      type="password"
+                      className={`form-control my-1 ${pwdError ? "border-danger" : ""}`}
+                      placeholder="Enter new password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      onFocus={() => setPwdError("")}
+                    />
+                    Confirm password:
+                    <input 
+                      type="password"
+                      className={`form-control my-1 ${pwdError ? "border-danger" : ""}`}
+                      placeholder="Confirm new password"
+                      value={newCPassword}
+                      onChange={(e) => setNewCPassword(e.target.value)}
+                      onFocus={() => setPwdError("")}
+                      required={newPassword}
+                    />
+                    {pwdError && <p className="mt-2 text-danger fw-normal">{pwdError}</p>}
+                  </>
+                  : 
+                  <p 
+                    className="d-flex py-2 fw-semibold text-light align-items-center cursor-pointer"
+                    onClick={() => setIsEditPwd(true)}
+                  >
+                    <BsCaretRightFill className="me-3 text-light fs-5" /> Change Password?
+                  </p>
+                } 
               </>
-              : <span className={`${newPassword ? "" : "text-secondary"}`}>{newPassword ? "********" : "unknown"}</span>
+              : 
+              <>
+                Password:
+                <span className={`${newEmail ? "" : "text-secondary"}`}>{newEmail ? "* hidden *" : "unknown"}</span>
+              </>
             }
           </p>
           
@@ -164,7 +178,7 @@ function Account({ onBack, onLogout }) {
             <input
               type="password"
               className="form-control mt-2"
-              placeholder="Current password"
+              placeholder="Enter your password"
               value={deletePassword}
               onChange={(e) => { setDeletePassword(e.target.value); setDeletePwdError(""); }}
             />

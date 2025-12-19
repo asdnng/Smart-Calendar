@@ -7,7 +7,6 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [userEmail, setUserEmail] = useState("");
-  const [userPassword, setUserPassword] = useState("");
   const [googleAccount, setGoogleAccount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,7 +32,6 @@ export const UserProvider = ({ children }) => {
     try {
       const res = await api.get('/user');
       setUserEmail(res.data.email || "");
-      setUserPassword(""); // do not keep password in frontend
     } catch (err) {
       console.error("Failed to load user info: ", err);
     } finally {
@@ -57,7 +55,6 @@ export const UserProvider = ({ children }) => {
         localStorage.setItem("refreshToken", res.data.refreshToken);
       }
       setUserEmail(updatedInfo.email ?? userEmail);
-      setUserPassword("");
     } catch (err) {
       console.error("Update user failed: ", err);
       alert("Failed to update user.");
@@ -71,7 +68,6 @@ export const UserProvider = ({ children }) => {
       setIsLoading(true);
       await api.delete("/user", { data: { email: userEmail, password } });
       setUserEmail("");
-      setUserPassword("");
       setGoogleAccount("");
       return { ok: true };
     } catch (err) {
@@ -87,7 +83,6 @@ export const UserProvider = ({ children }) => {
     <UserContext.Provider
       value={{
         userEmail,
-        userPassword,
         googleAccount,
         updateUser,
         deleteUser,
