@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { BsTagFill, BsThreeDots, BsCircle, BsCheckCircleFill } from 'react-icons/bs';
 
 import { useTasks } from '../Tasks.js';
-import { Categories } from '../Categories.js';
+import { Categories, changeColorOpacity as newColorOpacity } from '../Categories.js';
 import CRUD from '../crud/crud.js';
 import DeleteTask from '../crud/delete.js';
 import Sort from './uitilities/sort.js';
@@ -13,15 +13,6 @@ import gilNoTask from '../../assets/gil-no-task.png';
 
 import '../../cssModules/dashboard.css';
 import '../../cssModules/views/tasklist.css';
-
-const changeColorOpacity = (rgbaString, newOpacity) => {
-  const match = rgbaString.match(/rgba?\(([^)]+)\)/);
-  if (!match) return rgbaString;
-
-  const components = match[1].split(',');
-  const rgb = components.slice(0, 3);
-  return `rgba(${rgb.join(', ')}, ${newOpacity})`;
-};
 
 function TaskItem({ task, openTask, deleting, selectTask, deselectTask, selectedTasks }) {
   // Normalize category to lowercase for matching, and provide fallback for undefined categories
@@ -55,7 +46,7 @@ function TaskItem({ task, openTask, deleting, selectTask, deselectTask, selected
       {/* TASK INFO */}
       <div 
         className={`task-info ${deleting ? "col-7" : "col-8"} col-md-9 col-lg-10 px-4 py-3 text-start rounded-4`}
-        style= {{ backgroundColor: changeColorOpacity(categoryColor, 0.5) }}
+        style= {{ backgroundColor: newColorOpacity(categoryColor, 0.5) }}
       >
         <h4 className="mb-1 fw-semibold">{task.taskName}</h4>
         <p className="mb-1"><BsTagFill className="me-2"/> {task.category}</p>

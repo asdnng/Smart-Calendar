@@ -1,17 +1,7 @@
 import { BsXCircleFill, BsBookmarkFill, BsCalendarFill, BsClockFill } from 'react-icons/bs';
 
 import { Categories } from '../Categories';
-
-function formatDate(dateString) {
-  const [year, month, day] = dateString.split('-').map(Number);
-  const date = new Date(year, month - 1, day);
-  return date.toLocaleDateString('en-GB', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric'
-  });
-}
+import { formatDate } from '../views/uitilities/Date';
 
 function ReadTask({ task, onClose }) {
   const normalizedCategory = task.category ? task.category.toLowerCase() : null;
