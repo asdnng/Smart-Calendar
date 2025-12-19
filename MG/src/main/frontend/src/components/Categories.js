@@ -9,6 +9,15 @@ export const Categories = [
   { value: "other", label: "Other", color: "rgba(130, 130, 130, 1)" }
 ];
 
+export const changeColorOpacity = (rgbaString, newOpacity) => {
+  const match = rgbaString.match(/rgba?\(([^)]+)\)/);
+  if (!match) return rgbaString;
+
+  const components = match[1].split(',');
+  const rgb = components.slice(0, 3);
+  return `rgba(${rgb.join(', ')}, ${newOpacity})`;
+};
+
 function SelectCategory({ selected, onSelect }) {
   const [tagColor, setTagColor] = useState("#f3ebeb");
 
