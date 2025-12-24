@@ -18,6 +18,14 @@ export const changeColorOpacity = (rgbaString, newOpacity) => {
   return `rgba(${rgb.join(', ')}, ${newOpacity})`;
 };
 
+export const taskCategoryColor = (taskCategory) => {
+  const normalizedCategory = taskCategory ? taskCategory.toLowerCase() : null;
+  const category = Categories.find((c) => c && c.value === normalizedCategory);
+  const defaultColor = "rgba(130, 130, 130, 0.65)";
+
+  return category?.color || defaultColor;
+};
+
 function SelectCategory({ selected, onSelect }) {
   const [tagColor, setTagColor] = useState("#f3ebeb");
 
