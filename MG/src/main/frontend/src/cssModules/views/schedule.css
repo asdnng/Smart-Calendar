@@ -1,0 +1,49 @@
+.topbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  color: rgba(28, 52, 84, 1);
+  z-index: 100;
+  font-size: 14px;
+}
+.topbar .form-control {
+  font-size: 12px;
+}
+
+.hour-label {
+  border-top: 1.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.timeline-hour {
+  border-bottom: 1.2px solid rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.ten-minute-line {
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.1);
+  position: absolute;
+  pointer-events: none;
+}
+
+.current-time-bar {
+  width: 100%;
+  font-family: monospace;
+  font-size: x-small;
+  font-weight: bold;
+  color: rgba(121, 164, 179, 0.5);
+  z-index: 1;
+}
+
+.task-block {
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+.task-block:hover {
+  overflow-y: visible;
+}
