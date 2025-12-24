@@ -1,8 +1,8 @@
-export function formatDate(dateString) {
+export function formatDate(dateString, withWeekday) {
   const [year, month, day] = dateString.split('-').map(Number);
   const date = new Date(year, month - 1, day);
   return date.toLocaleDateString('en-GB', {
-    weekday: 'short',
+    weekday: withWeekday ? 'short' : undefined,
     day: 'numeric',
     month: 'short',
     year: 'numeric'
