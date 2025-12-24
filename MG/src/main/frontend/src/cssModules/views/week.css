@@ -1,0 +1,54 @@
+.weekview-container::-webkit-scrollbar {
+  width: 0;
+}
+.weekview-container {
+  position: relative;
+  height: 100%;
+  padding-top: 72px;
+}
+
+.weekview-content {
+  height: 100%;
+  position: relative;
+  padding-top: 30px;
+}
+
+/* TIMED TASKS CONTENT */
+.timed-topbar {
+  font-size: 12px;
+}
+
+.timed-topbar .today {
+  border: 1px solid rgba(243, 235, 235, 1);
+}
+.timed-topbar .selectedDate {
+  background-color: rgba(243, 235, 235, 1);
+  color: rgba(33, 37, 41, 1);
+}
+
+.weekview-container .timed-tasks-section {
+  height: 55%;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+/* UNTIMED TASKS CONTENT */
+.weekview-container .untimed-tasks-section {
+  height: 35%;
+}
+
+.untimed-topbar span {
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+}
+
+.weekview-container .untimed-tasks-content {
+  height: 60%;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.weekview-container .untimed-tasks {
+  overflow-y: auto;
+  scrollbar-width: none;
+}
