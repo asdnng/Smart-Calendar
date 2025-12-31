@@ -9,13 +9,12 @@ export function formatDate(dateString, withWeekday) {
   });
 }
 
-export const getTodayDateString = () => {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0'); 
-  const day = String(today.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-};
+export const getDateString = (date, withDay) => {
+  const dateStr = date.toLocaleDateString('sv-SE');
+  return withDay ? dateStr : dateStr.slice(0, 7);
+}
+
+export const getTodayDateString = (withDay = true) => getDateString(new Date(), withDay);
 
 export const getTodayCurrentMinutes = () => {
   const now = new Date();

@@ -4,12 +4,13 @@ import { useState, useEffect } from 'react';
 
 import { BsFillCalendarCheckFill } from 'react-icons/bs';
 
-import { changeColorOpacity as newColorOpacity, taskCategoryColor } from '../../Categories';
+import { taskBgColor } from '../../Categories';
 import { getTodayDateString as todayDate, getTodayCurrentMinutes as todayTime } from './Date';
 
 import '../../../cssModules/views/schedule.css';
 
 const hours = [...Array(24)].map((_, i) => i);
+export const daysInWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export const ViewHeader = ({ hasTasks, emptyLabel, isToday, onGoToToday, inputType, selectedOpt, onOptChange }) => (
   /* TOP BAR -> date selection */
@@ -85,7 +86,7 @@ export const CurrentTimeBar = ({ pxScale, currMinutes, withText }) => {
 };
 
 export const TaskBlock = ({ task, style, onClick, className = "" }) => {
-  const bgColor = newColorOpacity(taskCategoryColor(task.category), 0.65);
+  const bgColor = taskBgColor(task, 0.65);
 
   return (
     <div

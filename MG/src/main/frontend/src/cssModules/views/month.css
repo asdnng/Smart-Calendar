@@ -1,0 +1,99 @@
+.monthview-container::-webkit-scrollbar {
+  width: 0;
+}
+.monthview-container {
+  position: relative;
+  height: 100%;
+  padding-top: 72px;
+  overflow: hidden;
+}
+
+.monthview-content {
+  flex: 1;
+  overflow: hidden;
+  padding-top: 47px;
+}
+
+/* CALENDAR SECTION */
+.month-weekdays,
+.monthview-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.month-weekdays {
+  font-size: 12px;
+}
+
+.monthview-grid {
+  grid-template-rows: repeat(6, 1fr);
+  font-size: 12px;
+}
+
+.day-cell {
+  position: relative;
+  border: 1px solid #eee;
+  padding: 4px;
+  min-height: 64px;
+  overflow: hidden;
+}
+
+.date-outside-month {
+  background: #f8f8f8;
+  opacity: 0.5;
+}
+
+.calendar-date .number {
+  padding-left: 4px;
+  z-index: 10;
+}
+.calendar-date span {  /* Circle on date */
+  display: flex;
+  position: absolute;
+  padding: 10px;
+  border-radius: 50%;
+  z-index: 1;
+}
+.calendar-date .selected-date {
+  background-color: rgba(140, 187, 203, 0.5);
+}
+.calendar-date .today {
+  background-color: rgba(33, 37, 41, 0.5);
+}
+
+.day-tasks {
+  width: 95%;
+  left: 4px;
+  padding-top: 5px;
+  font-size: 0.55rem;
+}
+
+.day-tasks .task {
+  width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 2px 4px;
+  margin-top: 2px;
+  border-radius: 4px;
+  color: black;
+}
+
+/* DATE TASKLIST SECTION */
+.date-tasklist-section {
+  height: 100%;
+  font-size: 14px;
+}
+
+.date-tasklist-section .title {
+  padding-top: 14px;
+  justify-content: center;
+  align-items: end;
+  padding-bottom: 7px;
+}
+
+.date-tasklist-content {
+  height: 90%;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
