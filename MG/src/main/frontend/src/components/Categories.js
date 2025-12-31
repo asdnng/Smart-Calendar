@@ -26,6 +26,8 @@ export const taskCategoryColor = (taskCategory) => {
   return category?.color || defaultColor;
 };
 
+export const taskBgColor = (task, opc) => changeColorOpacity(taskCategoryColor(task.category), opc);
+
 function SelectCategory({ selected, onSelect }) {
   const [tagColor, setTagColor] = useState("#f3ebeb");
 

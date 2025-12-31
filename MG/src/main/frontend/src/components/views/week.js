@@ -4,7 +4,7 @@ import { useTasks } from '../Tasks';
 import { formatDate } from './uitilities/Date';
 import { getTodayDateString as todayDate } from './uitilities/Date';
 import { computeColumns as tasksColumn } from './uitilities/Computation';
-import { ViewHeader, HoursLabels, TimelineGrid, CurrentTimeBar, TimedTasksColumn, UntimedTasksList, useScheduleLogic } from './uitilities/schedule';
+import { ViewHeader, HoursLabels, TimelineGrid, CurrentTimeBar, TimedTasksColumn, UntimedTasksList, useScheduleLogic, daysInWeek } from './uitilities/schedule';
 import CRUD from '../crud/crud';
 
 import '../../cssModules/views/week.css';
@@ -31,8 +31,6 @@ function weekRange(dateString) {
 }
 
 function WeekView() {
-  const daysInWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
   const { tasks, tasksByDate, getFilteredTasks } = useTasks();
 
   const {
@@ -105,7 +103,7 @@ function WeekView() {
       {/* CONTENT WITH TWO SECTIONS */}
       <div className="weekview-content d-flex flex-grow-1 row">
         {/* DAYS TOP BAR */}
-        <div className="timed-topbar d-flex py-4 bg-dark text-light fw-semibold">
+        <div className="week-weekdays d-flex py-4 bg-dark text-light fw-semibold">
           <div className="col-1" />
           <div className="col-11 position-relative align-items-center">
             {daysInWeek.map((day, index) => {
@@ -173,7 +171,7 @@ function WeekView() {
         {/* BOTTOM SECTION: UNTIMED TASKS -> day tasks list */}
         <div className="untimed-tasks-section bg-light">
           {/* TITLE BAR */}
-          <div className="untimed-topbar pt-3 px-4 row fw-semibold">
+          <div className="title pt-3 px-4 row fw-semibold">
             <span className="d-flex col-4 ps-2 pb-2 justify-content-start text-black">Untimed Tasks</span>
             <span className="d-flex col-8 pe-2 pb-2 justify-content-end text-dark">{weekRangeLabel}</span>
           </div>

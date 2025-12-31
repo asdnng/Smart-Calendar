@@ -14,14 +14,14 @@
 }
 
 /* TIMED TASKS CONTENT */
-.timed-topbar {
+.week-weekdays {
   font-size: 12px;
 }
 
-.timed-topbar .today {
+.week-weekdays .today {
   border: 1px solid rgba(243, 235, 235, 1);
 }
-.timed-topbar .selectedDate {
+.week-weekdays .selectedDate {
   background-color: rgba(243, 235, 235, 1);
   color: rgba(33, 37, 41, 1);
 }
@@ -37,7 +37,7 @@
   height: 35%;
 }
 
-.untimed-topbar span {
+.untimed-tasks-section .title span {
   border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
   font-size: 14px;
 }
