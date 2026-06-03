@@ -1,3 +1,6 @@
-/gradlew text eol=lf
+# Normalize all text files to LF on commit (prevents false diffs on Windows)
+* text=auto eol=lf
+
+# Exceptions
 *.bat text eol=crlf
 *.jar binary

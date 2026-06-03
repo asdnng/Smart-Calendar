@@ -3,7 +3,7 @@ import { useState } from 'react';
 import googleLogo from '../../assets/google-logo.png';
 
 function SignIn({ onSwitch, onSubmit, onGoogle, setGil }) {
-  const [username, setUsername] = useState("");
+  const [usern ame, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {

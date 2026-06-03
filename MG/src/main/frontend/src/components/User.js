@@ -7,6 +7,7 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
   const [googleAccount, setGoogleAccount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,6 +33,7 @@ export const UserProvider = ({ children }) => {
     try {
       const res = await api.get('/user');
       setUserEmail(res.data.email || "");
+      setUserPassword(res.data.password || "");
     } catch (err) {
       console.error("Failed to load user info: ", err);
     } finally {
@@ -47,14 +49,8 @@ export const UserProvider = ({ children }) => {
     try {
       setIsLoading(true);
       const res = await api.put('/user', updatedInfo);
-      // store newly issued tokens
-      if (res.data?.accessToken) {
-        localStorage.setItem("token", res.data.accessToken);
-      }
-      if (res.data?.refreshToken) {
-        localStorage.setItem("refreshToken", res.data.refreshToken);
-      }
-      setUserEmail(updatedInfo.email ?? userEmail);
+      setUserEmail(updatedInfo.email);
+      //setUserPassword(updatedInfo.password);
     } catch (err) {
       console.error("Update user failed: ", err);
       alert("Failed to update user.");
@@ -63,17 +59,16 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const deleteUser = async (password) => {
+  const deleteUser = async () => {
     try {
       setIsLoading(true);
-      await api.delete("/user", { data: { email: userEmail, password } });
+      await api.delete("/user", userEmail);
       setUserEmail("");
+      setUserPassword("");
       setGoogleAccount("");
-      return { ok: true };
     } catch (err) {
       console.error("Delete user failed: ", err);
-      const message = err.response?.data?.message || "Failed to delete user.";
-      return { ok: false, message };
+      alert("Failed to delete user.");
     } finally {
       setIsLoading(false);
     }
@@ -83,6 +78,7 @@ export const UserProvider = ({ children }) => {
     <UserContext.Provider
       value={{
         userEmail,
+        userPassword,
         googleAccount,
         updateUser,
         deleteUser,

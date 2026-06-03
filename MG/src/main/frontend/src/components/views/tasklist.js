@@ -39,7 +39,7 @@ function TaskItem({ task, openTask, deleting, selectTask, deselectTask, selected
       </div>
       {/* TASK INFO */}
       <div 
-        className={`task-info ${deleting ? "col-7" : "col-8"} col-md-9 col-lg-10 px-4 py-3 text-start rounded-4`}
+        className={`task-info ${deleting ? "col-7 col-md-8 col-lg-9" : "col-8 col-md-9 col-lg-10"} px-4 py-3 text-start rounded-4`}
         style= {{ backgroundColor: newColorOpacity(taskCategoryColor(task.category), 0.5) }}
       >
         <h4 className="mb-1 fw-semibold">{task.taskName}</h4>

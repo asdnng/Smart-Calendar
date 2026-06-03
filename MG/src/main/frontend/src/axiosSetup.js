@@ -3,7 +3,7 @@ import { navigateTo } from './navigateService';
 
 /* REUSABLE AXIOS (BASE) INSTANCE */
 const api = axios.create({
-  baseURL: "http://localhost:8080", // backend base URL
+  baseURL: process.env.REACT_APP_BACKEND_API_BASE_URL || "http://localhost:8080",
   headers: { "Content-Type": "application/json" }
 });
 

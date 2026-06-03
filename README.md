@@ -1,117 +1,189 @@
-# Context-aware Smart Calendar
-This application can manage users schedules and tasks with AI-powered suggestions, summaries and prioritization.
-It evolves from a simple calendar into a true scheduling assistant.
+# Context-Aware Smart Calendar
+
+A full-stack scheduling application powered by AI. Users can manage tasks and events with intelligent suggestions, natural-language summaries, and priority recommendations provided by an integrated GPT model.
+
+---
+
+## Table of Contents
+
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Environment Variables](#environment-variables)
+  - [Running the Backend](#running-the-backend)
+  - [Running the Frontend](#running-the-frontend)
+- [Authentication Flow](#authentication-flow)
+- [API Reference](#api-reference)
+- [Database](#database)
+
+---
+
+## Tech Stack
+
+| Layer     | Technology                                      |
+|-----------|-------------------------------------------------|
+| Backend   | Java 21, Spring Boot 3, Spring Security, Spring Data JPA |
+| Auth      | JWT, OAuth2 (Google)                            |
+| AI        | Spring AI · OpenAI GPT-4o-mini                  |
+| Database  | MySQL 8 (Docker)                                |
+| Frontend  | React, Axios                                    |
+
+---
+
+## Project Structure
 
 ```
-git fetch origin
+MG/
+├── MG/                          # Spring Boot backend
+│   ├── src/main/
+│   │   ├── java/project_MG/     # Application source
+│   │   ├── frontend/            # React frontend
+│   │   └── resources/
+│   │       └── application.properties
+│   └── build.gradle
+└── README.md
+```
 
-git switch frontend(backend)
-git rebase origin/master
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Java 21+
+- Node.js 18+ / npm
+- Docker (for MySQL)
+
+### Environment Variables
+
+Before running the project, create the required environment files from the provided examples.
+
+**Backend** — create `MG/src/main/resources/.env` (or set system environment variables):
+
 ```
+OPENAI_API_KEY=your_openai_api_key
+DB_HOST=localhost
+DB_USERNAME=root
+DB_PASSWORD=your_db_password
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
 ```
+
+**Frontend** — create `MG/src/main/frontend/.env.local`:
+
+```
+REACT_APP_BACKEND_API_BASE_URL=http://localhost:8080
+REACT_APP_GOOGLE_AUTH_CLIENT_ID=your_google_client_id
+```
+
+> **Note:** Never commit `.env` files containing real credentials to version control. Both files are listed in `.gitignore`.
+
+### Running the Backend
+
+**Start the MySQL container:**
+
+```bash
+docker run --name MG -e MYSQL_ROOT_PASSWORD=<password> -e MYSQL_DATABASE=db1 -p 3306:3306 -d mysql:8
+```
+
+**Run the Spring Boot application:**
+
+```bash
+cd MG
+./gradlew bootRun
+```
+
+The API will be available at `http://localhost:8080`.
+
+### Running the Frontend
+
+```bash
+cd MG/src/main/frontend
 npm install
 npm start
 ```
 
-## How authentification work
-
-### 1. User Sign Up
-1. **Frontend** → `POST /user` with `email` & `password`  
-2. **Backend** → Creates a new user account  
-3. **Response** → Returns `memberId` (database ID! not user id :D)
+The React dev server will be available at `http://localhost:3000` and proxies API requests to port 8080 automatically.
 
 ---
 
-### 2. User Login
-1. **Frontend** → `POST /login` with `email` & `password`  
-2. **Backend** → Validates credentials  
-3. **Response** → Returns `accessToken` and `refreshToken`  
-4. **Frontend** → Save both tokens securely (e.g., localStorage or cookies)
+## Branch Workflow
 
----
-
-### 3. Access Protected Pages
-1. **Frontend** → Send requests with header:  
-2. **Backend** → Verifies access token validity  
-3. **Response** → Returns requested data
-
----
-
-### 4. Token Refresh (When Access Token Expires)
-1. **Frontend** → `POST /jwt/refresh` with `refreshToken`  
-2. **Backend** → Issues new `accessToken` and `refreshToken`  
-3. **Frontend** → Update stored tokens
-
----
-
-
-## List of API
-
-| Action           | Method | Endpoint       | Need Token? | Send                              | Get           |
-|------------------|---------|----------------|--------------|-----------------------------------|----------------|
-| Sign up          | POST    | /user          | ❌ No         | email, password                   | memberId       |
-| Check email      | POST    | /user/exist    | ❌ No         | email                             | true / false   |
-| Login            | POST    | /login         | ❌ No         | email, password                   | tokens         |
-| Get profile      | GET     | /user          | ✅ Yes        | -                                 | user info      |
-| Update profile   | PUT     | /user          | ✅ Yes        | email, password                   | userId         |
-| Delete account   | DELETE  | /user          | ✅ Yes        | email                             | true           |
-| Refresh token    | POST    | /jwt/refresh   | ❌ No         | refreshToken(in body)             | new tokens     |
-| Refresh token(social)    | POST    | /jwt/exchange  | ❌ No | refreshToken(cookie)              | new tokens     |
-| Create task      | POST    | /user          | ✅ Yes        | taskName, category, date, startTime, endTime, description               | create new task           |
-| Get my tasks     | GET     | /user          | ✅ Yes        | email                             | true           | List of all tasks
-| Update task      | PUT     | /tasks/{id}    | ✅ Yes        | taskName, category, date, startTime, endTime, description               | Updated task object       |
-| Delete task      | DELETE  | /tasks/{id}    | ✅ Yes        | email                             | true           |
-
-
-## DB selection -Working
-- Mysql(serving by Docker)
-- Container name: MG
-- DBname : db1
-- DBport : 3306
-
-check DB STATUS
+```bash
+# Sync your branch with the latest changes from master
+git fetch origin
+git switch frontend   # or: git switch backend
+git rebase origin/master
 ```
+
+---
+
+## Authentication Flow
+
+### 1. Sign Up
+1. `POST /user` with `email` and `password`
+2. Returns `memberId` (internal database identifier)
+
+### 2. Login
+1. `POST /login` with `email` and `password`
+2. Returns `accessToken` and `refreshToken`
+3. Store both tokens securely (e.g., `localStorage` or an `HttpOnly` cookie)
+
+### 3. Authenticated Requests
+- Attach the access token to every request as a Bearer header:
+  ```
+  Authorization: Bearer <accessToken>
+  ```
+
+### 4. Token Refresh
+1. When a request returns `401 Unauthorized`, send `POST /jwt/refresh` with the `refreshToken`
+2. Receive a new `accessToken` and `refreshToken`
+3. Update the stored tokens and retry the original request
+
+---
+
+## API Reference
+
+### User & Auth
+
+| Action                    | Method | Endpoint           | Auth Required | Request Body                  | Response              |
+|---------------------------|--------|--------------------|---------------|-------------------------------|-----------------------|
+| Sign up                   | POST   | `/user`            | No            | `email`, `password`           | `memberId`            |
+| Check email availability  | POST   | `/user/exist`      | No            | `email`                       | `true` / `false`      |
+| Login                     | POST   | `/login`           | No            | `email`, `password`           | `accessToken`, `refreshToken` |
+| Get profile               | GET    | `/user`            | Yes           | —                             | User object           |
+| Update profile            | PUT    | `/user`            | Yes           | `email`, `password`           | `userId`              |
+| Delete account            | DELETE | `/user`            | Yes           | `email`                       | `true`                |
+| Refresh token (JWT)       | POST   | `/jwt/refresh`     | No            | `refreshToken` (body)         | New tokens            |
+| Refresh token (OAuth2)    | POST   | `/jwt/exchange`    | No            | `refreshToken` (cookie)       | New tokens            |
+
+### Tasks
+
+| Action       | Method | Endpoint        | Auth Required | Request Body                                                             | Response             |
+|--------------|--------|-----------------|---------------|--------------------------------------------------------------------------|----------------------|
+| Create task  | POST   | `/tasks`        | Yes           | `taskName`, `category`, `date`, `startTime`, `endTime`, `description`    | Created task object  |
+| Get tasks    | GET    | `/tasks`        | Yes           | —                                                                        | List of task objects |
+| Update task  | PUT    | `/tasks/{id}`   | Yes           | `taskName`, `category`, `date`, `startTime`, `endTime`, `description`    | Updated task object  |
+| Delete task  | DELETE | `/tasks/{id}`   | Yes           | —                                                                        | `true`               |
+
+---
+
+## Database
+
+- **Engine:** MySQL 8
+- **Container name:** `MG`
+- **Database:** `db1`
+- **Port:** `3306`
+
+**Verify the container is running:**
+
+```bash
 docker ps
+```
+
+**Connect to the database:**
+
+```bash
 docker exec -it MG mysql -u root -p
 ```
-## Used library -working
-- lombok
-- OAuth2client
-- Spring security
-- Spring Data JPA
-- Spring web
-- MySQL driver
-
-# Appendix
-
-### what is the purpose af API: 
-
-1. To ensure backend and frontend developers are on the same page regarding the results of their planning.
-2. Because backend and frontend developers need a reference document when communicating about tasks.
-
-### What is Axios?  
-Axios is a popular JavaScript library used to make HTTP requests (e.g., GET, POST, PUT, DELETE) to a server. It is often used in frontend development to communicate with backend APIs.
-
-### Why use Axios?  
-1. It simplifies making HTTP requests compared to the built-in 'fetch API'(maybe you know this?).
-2. It supports features like request/response interceptors, automatic JSON parsing, and error handling.
-3. It works in both browsers and Node.js environments.
-
-### Example
-```javascript
-// Axios library import
-import axios from 'axios';
-
-// send GET request
-axios.get('https://api.example.com/data')
-  .then(response => {
-    // successful response
-    console.log('data:', response.data);
-  })
-  .catch(error => {
-    // exeception handleling
-    console.error('errrrrror occurrr:', error);
-  });
-```
-
-### Go for it! 화이팅! suu suu ! 
